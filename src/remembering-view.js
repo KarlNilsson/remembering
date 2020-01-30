@@ -131,7 +131,7 @@ const view = (() => {
                 clearModal();
             }
         });
-        modalContainer.focus();
+        title.querySelector('input').focus();
     }
 
     const clearModal = () => {
@@ -161,7 +161,21 @@ const view = (() => {
         todoView.editTodoElement(todo);
     }
 
-    return { todoDialog, getActiveCategoryId, addTodo, updateTodo }
+    const deleteRow = (id) => {
+        const table = document.querySelector('.remem-list-container table');
+        const row = table.querySelector(`tr#todo-${id}`);
+        table.removeChild(row);
+    }
+
+    const setBinEvent = (todo, event, callback) => {
+        const bin = document.querySelector(`#todo-${todo.id} .remem-bin`);
+        bin.addEventListener(event, callback);
+    }
+
+    return {
+        todoDialog, getActiveCategoryId, addTodo, updateTodo, deleteRow,
+        setBinEvent
+    }
 })();
 
 export { view }

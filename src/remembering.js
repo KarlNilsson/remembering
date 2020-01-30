@@ -37,6 +37,10 @@ const remembering = (() => {
 
     const renderNewTodo = (todo) => {
         view.addTodo(todo, editTodo);
+        view.setBinEvent(todo, 'click', (e) => {
+            e.stopPropagation();
+            deleteTodo(todo.id);
+        })
     }
 
     const reRenderTodo = (todo) => {
@@ -53,12 +57,10 @@ const remembering = (() => {
             todoModel.store(localStorage);
         };
         view.todoDialog(callback);
-        document.querySelector('.todo-form-container').focus();
     }
 
     const editTodo = (todo) => {
         const category = view.getActiveCategoryId();
-        console.log(`Hello, world. My title is '${todo.title}'`)
         const callback = (formObj) => {
             formObj['category'] = category;
             const editedTodo = todoModel.editTodo(todo.id, formObj);
@@ -69,16 +71,23 @@ const remembering = (() => {
         view.todoDialog(callback, todo);
     }
 
-    const removeTodo = (todoId) => {
+    const deleteTodo = (todoId) => {
         //0. Get currently active category (view)
+        const category = view.getActiveCategoryId();
+
         //1. Delete todo from category todo list (model)
+
         //2. Delete todo from internal list (model)
+        todoModel.deleteTodo(todoId);
+        todoModel.store(localStorage);
+
         //3. Remove element from todo table (view)
+        view.deleteRow(todoId);
     }
 
     return {
         addCategory, editCategory, deleteCategory, loadLocalStorage, addTodo,
-        editTodo, removeTodo
+        editTodo, deleteTodo
     }
 
 })()

@@ -72,7 +72,6 @@ const todoView = (() => {
         } else {
             row.classList.remove('prioritized');
         }
-
     }
 
     const generateTableHeader = () => {

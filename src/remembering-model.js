@@ -1,6 +1,7 @@
 const todoModel = (() => {
     let _id = 0;
     const _todoMap = {};
+    let _storage;
 
     const displayIndex = () => {
         console.log(_id);
@@ -37,15 +38,40 @@ const todoModel = (() => {
         return _todoMap;
     }
 
-    const store = (storage, id) => {
-        storage['todo'] = JSON.stringify(_todoMap);
+    const store = (storage=null) => {
+        if (storage === null || _storage !== storage ) {
+            _storage = storage;
+        }
+        _storage['todo'] = JSON.stringify(_todoMap);
     }
 
     const getTodo = (id) => {
         return _todoMap[id];
     }
 
-    return { displayIndex, createTodo, editTodo, loadStorage, getTodo, store };
+    const deleteTodo = (id) => {
+        _todoMap[id] = undefined;
+    }
+
+    const getTodoIds = () => {
+        return Object.keys(_todoMap);
+    }
+
+    return { displayIndex, createTodo, editTodo, deleteTodo, loadStorage,
+             getTodo, store, getTodoIds };
 })();
 
-export { todoModel };
+const categoryModel = (() => {
+
+    const addCategory = () => {};
+    const editCategory = () => {};
+    const deleteCategory = () => {};
+    const addTodo = () => {};
+    const removeTodo = () => {};
+
+    return {
+        addCategory, editCategory, deleteCategory, addTodo, removeTodo
+    }
+})();
+
+export { todoModel, categoryModel };
