@@ -32,7 +32,8 @@ const todoView = (() => {
     }
 
     const editTodoElement = (todo) => {
-        const childNodes = document.querySelector(`#todo-${todo['id']}`).childNodes;
+        const row = document.querySelector(`#todo-${todo['id']}`);
+        const childNodes = row.childNodes;
         const titleTD = childNodes[_trIndex.TITLE];
         const dueDateTD = childNodes[_trIndex.DUEDATE];
         const doneTD = childNodes[_trIndex.DONE];
@@ -45,6 +46,8 @@ const todoView = (() => {
         }
         if (todo['priority']) {
             row.classList.add('prioritized');
+        } else {
+            row.classList.remove('prioritized');
         }
 
     }

@@ -1,8 +1,3 @@
-// TODO (ironically): Add eventlisteners to todos, to expand them on click
-// in order to edit their attributes.
-
-import { view } from './remembering-view.js';
-
 const todoModel = (() => {
     let _id = 0;
     const _todoMap = {};
@@ -19,10 +14,17 @@ const todoModel = (() => {
             dueDate: args['dueDate'],
             priority: args['priority'],
             done: false,
-            category: args['categoryId'],
+            category: args['category'],
         }
         _todoMap[_id] = todo;
         return todo;
+    }
+
+    const editTodo = (id, data) => {
+        Object.keys(data).forEach(key => {
+            _todoMap[id][key] = data[key];
+        })
+        return _todoMap[id];
     }
 
     const loadStorage = (storage) => {
@@ -31,12 +33,11 @@ const todoModel = (() => {
             _id = Math.max(key, _id);
             todos[key].id = _id;
             _todoMap[_id] = todos[key];
-            view.addTodo(_todoMap[_id]);
         })
+        return _todoMap;
     }
 
     const store = (storage, id) => {
-        debugger;
         storage['todo'] = JSON.stringify(_todoMap);
     }
 
@@ -44,7 +45,7 @@ const todoModel = (() => {
         return _todoMap[id];
     }
 
-    return { displayIndex, createTodo, loadStorage, getTodo, store };
+    return { displayIndex, createTodo, editTodo, loadStorage, getTodo, store };
 })();
 
 export { todoModel };

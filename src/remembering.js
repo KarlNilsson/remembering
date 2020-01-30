@@ -29,19 +29,27 @@ const remembering = (() => {
         if (localStorage['todo'] === undefined) {
             localStorage['todo'] = JSON.stringify({});
         }
-        todoModel.loadStorage(localStorage);
-        //1. Check localStorage for saved category objects (model)
-        //2. Render (view)
+        const loaded = todoModel.loadStorage(localStorage);
+        Object.keys(loaded).forEach(key => { 
+            renderNewTodo(loaded[key]);
+        })
+    }
+
+    const renderNewTodo = (todo) => {
+        view.addTodo(todo, editTodo);
+    }
+
+    const reRenderTodo = (todo) => {
+        view.updateTodo(todo);
     }
 
     const addTodo = () => {
-        //0. Get currently active category (view)
-        const categoryId = view.getActiveCategoryId();
+        const category = view.getActiveCategoryId();
         const callback = (formObj) => {
-            formObj['categoryId'] = categoryId;
+            formObj['category'] = category;
             const todo = todoModel.createTodo(formObj);
-            _categories[categoryId][todo['id']] = todo;
-            view.addTodo(todo, editTodo);
+            _categories[category][todo.id] = todo;
+            renderNewTodo(todo);
             todoModel.store(localStorage);
         };
         view.todoDialog(callback);
@@ -49,12 +57,16 @@ const remembering = (() => {
     }
 
     const editTodo = (todo) => {
+        const category = view.getActiveCategoryId();
         console.log(`Hello, world. My title is '${todo.title}'`)
-        //0. Get currently active category (view)
-        //0.5 Declare callback function (this)
-        //1. Display pre-filled form (view)
-        //2. On form submit, edit existing todo (model)
-        //3. Update table with edited todo element (view)
+        const callback = (formObj) => {
+            formObj['category'] = category;
+            const editedTodo = todoModel.editTodo(todo.id, formObj);
+            _categories[category][editedTodo.id] = editedTodo;
+            reRenderTodo(editedTodo);
+            todoModel.store(localStorage);
+        }
+        view.todoDialog(callback, todo);
     }
 
     const removeTodo = (todoId) => {

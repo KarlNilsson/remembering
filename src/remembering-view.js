@@ -44,13 +44,16 @@ const view = (() => {
     
         const customSpan = document.createElement('span');
         customSpan.classList.add('remem-checkbox');
+        if (content) {
+            customSpan.classList.add('checked');
+        }
         customSpan.addEventListener('click', e => {
-            e.target.classList.toggle('active');
+            e.target.classList.toggle('checked');
         });
     
         inputContainer.appendChild(inputElement);
         inputContainer.appendChild(customSpan);
-        inputDiv.innerText = 'Priority';
+        inputDiv.innerText = name;
         inputDiv.appendChild(inputContainer);
     
         return inputDiv;
@@ -68,15 +71,34 @@ const view = (() => {
         todoForm.classList.add('todo-form', 'general-text');
         todoFormContainer.appendChild(todoForm);
         
-        const title = createInput({name: 'Title', content: todo['title']})
-        const description = createInput({name: 'Description'})
-        const dueDate = createInput({name: 'Due date', type: 'date', content: todo['dueDate']})
-        const prio = createCheckbox({name: 'Priority', content: todo['prioritized']})
+        const title = createInput({
+            name: 'Title',
+            content: todo['title']
+        })
+        const description = createInput({
+            name: 'Description'
+        })
+        const dueDate = createInput({
+            name: 'Due date',
+            type: 'date',
+            content: todo['dueDate']
+        })
+        const prio = createCheckbox({
+            name: 'Priority',
+            content: todo['priority']
+        })
+
+        const done = createCheckbox({
+            name: 'Done',
+            content: todo['done']
+        })
 
         todoForm.appendChild(title);
         todoForm.appendChild(description);
         todoForm.appendChild(dueDate);
         todoForm.appendChild(prio);
+        todoForm.appendChild(done);
+
     
         const submitButton = document.createElement('button');
         submitButton.classList.add('remem-button', 'remem-input', 'general-text');
@@ -88,7 +110,9 @@ const view = (() => {
                 title: title.querySelector('input').value,
                 description: description.querySelector('input').value,
                 dueDate: dueDate.querySelector('input').value,
-                prio: Array.from(prio.querySelector('.remem-checkbox')
+                priority: Array.from(prio.querySelector('.remem-checkbox')
+                        .classList).includes('checked'),
+                done: Array.from(done.querySelector('.remem-checkbox')
                         .classList).includes('checked')
             }
             );
@@ -101,7 +125,12 @@ const view = (() => {
             if (event.key === 'Escape') {
                 clearModal();
             }
-        })
+        });
+        modalContainer.addEventListener('click', (e) => {
+            if (e.target === modalContainer) {
+                clearModal();
+            }
+        });
         modalContainer.focus();
     }
 
