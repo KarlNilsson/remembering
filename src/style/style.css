@@ -14,7 +14,13 @@ body {
     margin: auto;
     font-size: x-large;
     background-color: var(--color-1);
-    width: 80%;
+    width: 70%;
+}
+
+@media only screen and (max-width: 1400px) {
+    body {
+        width: 80%
+    }
 }
 
 .header-container {
@@ -169,6 +175,7 @@ th, td, tr {
 
 .todo-form {
     padding: 3rem;
+    overflow: hidden;
 }
 
 input[type='date']::-webkit-clear-button,
@@ -262,5 +269,14 @@ input[type='date']::-webkit-inner-spin-button {
 .remem-input-div {
     padding-left: 1.5em;
     padding-top: 0.5em;
-    max-height: 2em;
+    max-height: 1.5em;
+}
+
+.remem-button {
+    margin-top: 0.5em;
+}
+
+.remem-button:hover {
+    background-color: var(--color-2);
+    border-color: var(--color-3);
 }
