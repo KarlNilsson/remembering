@@ -131,7 +131,9 @@ const view = (() => {
                 clearModal();
             }
         });
-        title.querySelector('input').focus();
+        const input = title.querySelector('input')
+        input.focus();
+        input.scrollTo(0, 0);
     }
 
     const clearModal = () => {
