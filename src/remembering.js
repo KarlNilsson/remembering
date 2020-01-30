@@ -41,6 +41,11 @@ const remembering = (() => {
             e.stopPropagation();
             deleteTodo(todo.id);
         })
+        view.setCheckBoxEvent(todo, 'click', (e) => {
+            e.stopPropagation();
+            todoModel.switchStatus(todo.id);
+            view.updateTodo(todo);
+        });
     }
 
     const reRenderTodo = (todo) => {

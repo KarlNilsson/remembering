@@ -57,8 +57,13 @@ const todoModel = (() => {
         return Object.keys(_todoMap);
     }
 
+    const switchStatus = (id) => {
+        _todoMap[id].done = !_todoMap[id].done;
+        return _todoMap[id];
+    }
+
     return { displayIndex, createTodo, editTodo, deleteTodo, loadStorage,
-             getTodo, store, getTodoIds };
+             getTodo, store, getTodoIds, switchStatus };
 })();
 
 const categoryModel = (() => {

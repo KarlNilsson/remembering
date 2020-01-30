@@ -174,9 +174,14 @@ const view = (() => {
         bin.addEventListener(event, callback);
     }
 
+    const setCheckBoxEvent = (todo, event, callback) => {
+        const checkbox = document.querySelector(`#todo-${todo.id} .remem-done`);
+        checkbox.addEventListener(event, callback);
+    }
+
     return {
         todoDialog, getActiveCategoryId, addTodo, updateTodo, deleteRow,
-        setBinEvent
+        setBinEvent, setCheckBoxEvent
     }
 })();
 
