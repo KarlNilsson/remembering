@@ -2,6 +2,7 @@ import './style/style.css';
 import { createCategory } from './category.js';
 import { todoView } from './todo-view.js';
 import { remembering } from './remembering.js';
+import 'icono';
 
 const body = document.querySelector('body');
 

@@ -1,31 +1,51 @@
 const todoView = (() => {
     const _trIndex = {
-        TITLE: 0,
-        DUEDATE: 1,
-        DONE: 2
+        DONE: 0,
+        TITLE: 1,
+        DUEDATE: 2,
+        STATUS: 3
     }
 
     const generateTodoElements = (todo) => {
         const row = document.createElement('tr');
         row.classList.add('todo-row');
         row.id = `todo-${todo['id']}`;
+        const doneTD = document.createElement('td');
+        doneTD.classList.add('remem-icon-td');
         const titleTD = document.createElement('td');
         const dueDateTD = document.createElement('td');
-        const doneTD = document.createElement('td');
+        const statusTD = document.createElement('td');
+        statusTD.classList.add('remem-icon-td');
+        const binContainer = document.createElement('div');
+        const bin = document.createElement('div');
+        const doneContainer = document.createElement('div');
+        const done = document.createElement('div');
+        bin.classList.add('icono-trash', 'remem-icon');
+        binContainer.classList.add('remem-bin');
+        binContainer.appendChild(bin);
+        statusTD.appendChild(binContainer);
+
+        
+        done.classList.add('remem-icon');
+        doneContainer.classList.add('remem-done', 'remem-done-container');
+        doneContainer.appendChild(done)
+        doneTD.appendChild(doneContainer);
 
         titleTD.innerHTML = todo['title'] !== undefined ? todo['title'] : '';
         dueDateTD.innerHTML = todo['dueDate'] !== undefined ? todo['dueDate'] : '';
-        doneTD.innerHTML = todo['done'] !== undefined ? todo['done'] : '';
         if (todo['done']) {
             row.classList.add('done');
+            done.classList.add('icono-check')
+        } else {
         }
         if (todo['priority']) {
             row.classList.add('prioritized');
         }
         
+        row.appendChild(doneTD);
         row.appendChild(titleTD);
         row.appendChild(dueDateTD);
-        row.appendChild(doneTD);
+        row.appendChild(statusTD);
         
         return row;
 
@@ -36,13 +56,16 @@ const todoView = (() => {
         const childNodes = row.childNodes;
         const titleTD = childNodes[_trIndex.TITLE];
         const dueDateTD = childNodes[_trIndex.DUEDATE];
-        const doneTD = childNodes[_trIndex.DONE];
 
         titleTD.innerHTML = todo['title'] !== undefined ? todo['title'] : '';
         dueDateTD.innerHTML = todo['dueDate'] !== undefined ? todo['dueDate'] : '';
-        doneTD.innerHTML = todo['done'] !== undefined ? todo['done'] : '';
+        const doneIcon = childNodes[_trIndex.DONE].querySelector('.remem-icon');
         if (todo['done']) {
             row.classList.add('done');
+            doneIcon.classList.add('icono-check');
+        } else {
+            row.classList.remove('done');
+            doneIcon.classList.remove('icono-check');
         }
         if (todo['priority']) {
             row.classList.add('prioritized');
@@ -55,15 +78,16 @@ const todoView = (() => {
     const generateTableHeader = () => {
         const trHeaders = document.createElement('tr');
 
+        const trDone = document.createElement('th');
         const trTitle = document.createElement('th');
         const trDueDate = document.createElement('th');
-        const trDone = document.createElement('th');
+        const trStatus = document.createElement('th');
         trTitle.innerHTML = 'Title';
         trDueDate.innerHTML = 'Due date';
-        trDone.innerHTML = 'Done';
+        trHeaders.appendChild(trDone);
         trHeaders.appendChild(trTitle);
         trHeaders.appendChild(trDueDate);
-        trHeaders.appendChild(trDone);
+        trHeaders.appendChild(trStatus);
 
         return trHeaders;
     }

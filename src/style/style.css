@@ -77,7 +77,7 @@ th {
 }
 
 td {
-    padding: 0.5rem;
+    padding: calc(1rem/3);
 }
 
 th, td, tr {
@@ -92,6 +92,18 @@ th, td, tr {
     color: var(--color-7);
 }
 
+.todo-row .remem-icon-td:hover .icono-trash {
+    background: var(--color-4);
+}
+
+.todo-row.done .remem-icon-td:hover .icono-trash {
+    background: var(--color-3);
+}
+
+.todo-row.prioritized .remem-icon-td:hover .icono-trash {
+    background: var(--color-7);
+}
+
 .todo-row.done {
     color: var(--color-3);
     text-decoration: line-through;
@@ -99,6 +111,36 @@ th, td, tr {
 
 .todo-row.done:hover {
     background-color: var(--color-2);
+}
+
+.todo-row.done .remem-done:hover {
+    background-color: var(--color-5);
+}
+
+.todo-row .icono-check {
+    color: var(--color-6);
+}
+
+.todo-row .remem-icon-td {
+    width: 1.3em;
+    height: 1.3em;
+}
+
+.todo-row:hover .remem-done {
+    border-color: var(--color-3);
+}
+
+.todo-row .remem-done:hover {
+    background-color: var(--color-6);
+}
+
+.todo-row .remem-done {
+    border: solid 2px var(--color-2)
+}
+
+.todo-row .remem-done-container {
+    width: 1.3em;
+    height: 1.3em;
 }
 
 .modal-container {
@@ -117,7 +159,7 @@ th, td, tr {
 .todo-form-container {
     margin: auto;
     margin-top: 12rem;
-    border: solid 1px tomato;
+    border: solid 2px var(--color-3);
     width: 50%;
 }
 
