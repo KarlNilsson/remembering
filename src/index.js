@@ -47,12 +47,6 @@ const header = todoView.generateTableHeader();
 todoTable.appendChild(header);
 contentGrid.appendChild(todoTableContainer);
 
-const modalContainer = document.createElement('div');
-modalContainer.classList.add('modal-container');
-modalContainer.tabIndex = 0;
-
-body.appendChild(modalContainer);
-
 contentGridContainer.appendChild(contentGrid);
 body.appendChild(contentGridContainer);
 

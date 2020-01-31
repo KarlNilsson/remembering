@@ -48,15 +48,15 @@ const controller = (() => {
 
             }
             else if (className.includes('remem-done')) {
-                console.log(`Let's (un)check todo #${id}!`);
                 todoModel.switchStatus(id);
                 view.updateTodo(todoModel.getTodo(id));
                 todoModel.store(localStorage);
             }
+            // If we click anywhere else on the todo, we want to edit it
             else {
-                console.log(`Let's edit todo #${id}`);
                 const currentTodo = todoModel.getTodo(id);
                 view.todoDialog((data) => {
+
                     data['category'] = activeCategory();
                     todoModel.editTodo(id, data);
                     view.updateTodo(currentTodo)

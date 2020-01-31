@@ -2,16 +2,16 @@ import { todoView } from './todo-view.js';
 
 const view = (() => {
 
-    const createInput = ({name, id=name, type='text', content=''}) => {
+    const createInput = (name, content='', type='text') => {
 
         const inputDiv = document.createElement('div');
         inputDiv.classList.add('input-div');
-        inputDiv.id = id;
+        inputDiv.id = name;
     
         const inputElement = document.createElement('input');
         inputElement.classList.add('remem-input', 'general-text');
         inputElement.type = type;
-        inputElement.id = id;
+        inputElement.id = name;
         if (content !== '') {
             inputElement.value = content;
         }
@@ -23,7 +23,7 @@ const view = (() => {
         }
     
         const labelElement = document.createElement('label');
-        labelElement.setAttribute('for', id);
+        labelElement.setAttribute('for', name);
         labelElement.innerHTML = name;
     
         inputDiv.appendChild(labelElement);
@@ -31,10 +31,10 @@ const view = (() => {
         return inputDiv;
     }
 
-    const createCheckbox = ({name, id=name, content=false}) => {
+    const createCheckbox = (name, content=false) => {
         const inputDiv = document.createElement('div');
         inputDiv.classList.add('remem-input-div');
-        inputDiv.id = id;
+        inputDiv.id = name;
     
         const inputContainer = document.createElement('label');
         inputContainer.classList.add('remem-checkbox-container');
@@ -60,44 +60,25 @@ const view = (() => {
     }
 
     const todoDialog = (callback, todo={}) => {
-        const modalContainer = document.querySelector('.modal-container');
+        const modalContainer = createModal();
         modalContainer.focus();
 
         const todoFormContainer = document.createElement('div');
         todoFormContainer.classList.add('todo-form-container', 'general-text');
 
-    
         const todoForm = document.createElement('div');
         todoForm.classList.add('todo-form', 'general-text');
         todoFormContainer.appendChild(todoForm);
         
-        const title = createInput({
-            name: 'Title',
-            content: todo['title']
-        })
-        const description = createInput({
-            name: 'Description',
-            content: todo['description']
-        })
-        const dueDate = createInput({
-            name: 'Due date',
-            type: 'date',
-            content: todo['dueDate']
-        })
-        const prio = createCheckbox({
-            name: 'Priority',
-            content: todo['priority']
-        })
-
-        const done = createCheckbox({
-            name: 'Done',
-            content: todo['done']
-        })
-
+        const title = createInput('Title', todo['title']);
         todoForm.appendChild(title);
+        const description = createInput('Description', todo['description']);
         todoForm.appendChild(description);
+        const dueDate = createInput('Due date', todo['dueDate'], 'date',);
         todoForm.appendChild(dueDate);
+        const prio = createCheckbox('Priority', todo['priority']);
         todoForm.appendChild(prio);
+        const done = createCheckbox('Done', todo['done']);
         todoForm.appendChild(done);
 
     
@@ -144,10 +125,7 @@ const view = (() => {
 
     const clearModal = () => {
         const modalContainer = document.querySelector('.modal-container');
-        modalContainer.style.visibility = 'hidden';
-        Array.from(modalContainer.children).forEach((child) => {
-            modalContainer.removeChild(child)
-        });
+        document.querySelector('body').removeChild(modalContainer);
     }
 
     const categoryDialog = () => {};
@@ -170,6 +148,14 @@ const view = (() => {
         const table = document.querySelector('.remem-list-container table');
         const row = table.querySelector(`tr#todo-${id}`);
         table.removeChild(row);
+    }
+
+    const createModal = () => {
+        const modalContainer = document.createElement('div');
+        modalContainer.classList.add('modal-container');
+        modalContainer.tabIndex = 0;
+        document.querySelector('body').appendChild(modalContainer);
+        return modalContainer;
     }
 
     return {
