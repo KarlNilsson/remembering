@@ -17,7 +17,7 @@ body {
     width: 70%;
 }
 
-@media only screen and (max-width: 1400px) {
+@media only screen and (max-width: 1170px) {
     body {
         width: 80%
     }
@@ -102,12 +102,12 @@ th, td, tr {
     background: var(--color-4);
 }
 
-.todo-row.done .remem-icon-td:hover .icono-trash {
-    background: var(--color-3);
-}
-
 .todo-row.prioritized .remem-icon-td:hover .icono-trash {
     background: var(--color-7);
+}
+
+.todo-row.done .remem-icon-td:hover .icono-trash {
+    background: var(--color-3);
 }
 
 .todo-row.done {
@@ -125,6 +125,34 @@ th, td, tr {
 
 .todo-row .icono-check {
     color: var(--color-6);
+}
+
+th {
+    padding-bottom: 0.5em;
+}
+
+tr:first {
+    padding-top: 1.5em;
+}
+
+tr .remem-new-container {
+    display: flex;
+    justify-content: center;
+    width: 1.3em;
+    height: 1.3em;
+    margin: auto;margin-bottom: 0;
+}
+
+tr .icono-plus {
+    color: var(--color-6);
+    border: solid 2px var(--color-6);
+    border-radius: 50%;
+}
+
+tr .icono-plus:hover {
+    color: var(--color-3);
+    background-color: var(--color-6);
+    border-color: var(--color-3);
 }
 
 .todo-row .remem-icon-td {

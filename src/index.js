@@ -12,9 +12,6 @@ headerContainer.classList.add('header-container');
 const h1 = document.createElement('h1');
 h1.classList.add('general-text');
 h1.innerHTML = 'Remembering';
-h1.addEventListener('click', () => {
-    remembering.addTodo();
-});
 headerContainer.appendChild(h1);
 body.appendChild(headerContainer);
 
@@ -59,3 +56,4 @@ contentGridContainer.appendChild(contentGrid);
 body.appendChild(contentGridContainer);
 
 remembering.loadLocalStorage();
+remembering.newButtonListener();

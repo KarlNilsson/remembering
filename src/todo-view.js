@@ -21,7 +21,7 @@ const todoView = (() => {
         const doneContainer = document.createElement('div');
         const done = document.createElement('div');
         bin.classList.add('icono-trash', 'remem-icon');
-        binContainer.classList.add('remem-bin');
+        binContainer.classList.add('remem-bin', 'remem-bin-container');
         binContainer.appendChild(bin);
         statusTD.appendChild(binContainer);
 
@@ -81,6 +81,14 @@ const todoView = (() => {
         const trTitle = document.createElement('th');
         const trDueDate = document.createElement('th');
         const trStatus = document.createElement('th');
+
+        const newContainer = document.createElement('div');
+        trDone.appendChild(newContainer);
+        newContainer.classList.add('remem-new-container')
+        const newButton = document.createElement('div');
+        newContainer.appendChild(newButton);
+        newButton.classList.add('icono-plus');
+
         trTitle.innerHTML = 'Title';
         trDueDate.innerHTML = 'Due date';
         trHeaders.appendChild(trDone);

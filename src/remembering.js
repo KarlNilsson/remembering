@@ -45,6 +45,7 @@ const remembering = (() => {
             e.stopPropagation();
             todoModel.switchStatus(todo.id);
             view.updateTodo(todo);
+            todoModel.store(localStorage);
         });
     }
 
@@ -90,9 +91,13 @@ const remembering = (() => {
         view.deleteRow(todoId);
     }
 
+    const newButtonListener = () => {
+        view.setNewButtonEvent('click', addTodo)
+    }
+
     return {
         addCategory, editCategory, deleteCategory, loadLocalStorage, addTodo,
-        editTodo, deleteTodo
+        editTodo, deleteTodo, newButtonListener
     }
 
 })()

@@ -104,9 +104,8 @@ const view = (() => {
         submitButton.classList.add('remem-button', 'remem-input', 'general-text');
         submitButton.innerHTML = 'Submit';
         todoForm.appendChild(submitButton);
-        submitButton.addEventListener('click', () => {
-            callback(
-            {
+        const values = () => {
+            return {
                 title: title.querySelector('input').value,
                 description: description.querySelector('input').value,
                 dueDate: dueDate.querySelector('input').value,
@@ -115,7 +114,9 @@ const view = (() => {
                 done: Array.from(done.querySelector('.remem-checkbox')
                         .classList).includes('checked')
             }
-            );
+        };
+        submitButton.addEventListener('click', () => {
+            callback(values());
             clearModal();
         });
         modalContainer.appendChild(todoFormContainer);
@@ -123,6 +124,10 @@ const view = (() => {
         modalContainer.style.visibility = 'visible';
         modalContainer.addEventListener('keyup', (e) => {
             if (event.key === 'Escape') {
+                clearModal();
+            }
+            else if (event.key === 'Enter') {
+                callback(values());
                 clearModal();
             }
         });
@@ -179,9 +184,15 @@ const view = (() => {
         checkbox.addEventListener(event, callback);
     }
 
+    const setNewButtonEvent = (event, callback) => {
+        const newButton = document.querySelector('.remem-new-container');
+        debugger;
+        newButton.addEventListener(event, callback);
+    }
+
     return {
         todoDialog, getActiveCategoryId, addTodo, updateTodo, deleteRow,
-        setBinEvent, setCheckBoxEvent
+        setBinEvent, setCheckBoxEvent, setNewButtonEvent
     }
 })();
 
