@@ -7,15 +7,15 @@ const todoModel = (() => {
         console.log(_id);
     };
 
-    const createTodo = (args) => {
+    const createTodo = (data) => {
         const todo = {
             id: ++_id,
-            title: args['title'],
-            description: args['description'],
-            dueDate: args['dueDate'],
-            priority: args['priority'],
+            title: data['title'],
+            description: data['description'],
+            dueDate: data['dueDate'],
+            priority: data['priority'],
             done: false,
-            category: args['category'],
+            category: data['category'],
         }
         _todoMap[_id] = todo;
         return todo;
@@ -68,14 +68,46 @@ const todoModel = (() => {
 
 const categoryModel = (() => {
 
-    const addCategory = () => {};
-    const editCategory = () => {};
-    const deleteCategory = () => {};
-    const addTodo = () => {};
-    const removeTodo = () => {};
+    let _id = 0;
+    const _categoryMap = {};
+    const category = (name) => {
+        return {
+            id: ++_id,
+            name: name,
+            todos: {}
+        }
+    }
+
+    const addCategory = (data) => {
+        const newCategory = category(data['name']);
+        _categoryMap[_id] = newCategory;
+    }
+
+    const editCategory = (id, data) => {
+        Object.keys(data).forEach(key => {
+            _categoryMap[id][key] = data[key];
+        });
+    };
+
+    const deleteCategory = (id) => {
+        _categoryMap[id] = undefined;
+    };
+
+    const addTodo = (categoryId, todoId) => {
+        _categoryMap[categoryId].todos[todoId] = todoModel.getTodo(todoId);
+    };
+
+    const removeTodo = (categoryId, todoId) => {
+        _categoryMap[categoryId].todos[todoId] = undefined;
+    };
+
+    const getAllTodos = (categoryId) => {
+        return _categoryMap[categoryId].todos;
+    }
 
     return {
-        addCategory, editCategory, deleteCategory, addTodo, removeTodo
+        addCategory, editCategory, deleteCategory, addTodo, removeTodo,
+        getAllTodos
     }
 })();
 

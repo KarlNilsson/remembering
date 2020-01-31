@@ -3,6 +3,7 @@ import { createCategory } from './category.js';
 import { todoView } from './todo-view.js';
 import { remembering } from './remembering.js';
 import 'icono';
+import { controller } from './controller.js'
 
 const body = document.querySelector('body');
 
@@ -56,4 +57,4 @@ contentGridContainer.appendChild(contentGrid);
 body.appendChild(contentGridContainer);
 
 remembering.loadLocalStorage();
-remembering.newButtonListener();
+controller.addInitialListeners();

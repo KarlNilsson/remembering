@@ -20,13 +20,13 @@ const todoView = (() => {
         const bin = document.createElement('div');
         const doneContainer = document.createElement('div');
         const done = document.createElement('div');
-        bin.classList.add('icono-trash', 'remem-icon');
+        bin.classList.add('icono-trash', 'remem-icon', 'remem-bin');
         binContainer.classList.add('remem-bin', 'remem-bin-container');
         binContainer.appendChild(bin);
         statusTD.appendChild(binContainer);
 
         
-        done.classList.add('remem-icon');
+        done.classList.add('remem-icon', 'remem-done');
         doneContainer.classList.add('remem-done', 'remem-done-container');
         doneContainer.appendChild(done)
         doneTD.appendChild(doneContainer);

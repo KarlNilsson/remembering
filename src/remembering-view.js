@@ -76,7 +76,8 @@ const view = (() => {
             content: todo['title']
         })
         const description = createInput({
-            name: 'Description'
+            name: 'Description',
+            content: todo['description']
         })
         const dueDate = createInput({
             name: 'Due date',
@@ -155,11 +156,8 @@ const view = (() => {
         return document.querySelector('.category-item.active').id;
     }
 
-    const addTodo = (todo, clickEvent) => {
+    const addTodo = (todo) => {
         const row = todoView.generateTodoElements(todo);
-        row.addEventListener('click', () => {
-            clickEvent(todo);
-        })
         const table = document.querySelector('.todo-container table');
         table.appendChild(row);
     }
@@ -174,25 +172,8 @@ const view = (() => {
         table.removeChild(row);
     }
 
-    const setBinEvent = (todo, event, callback) => {
-        const bin = document.querySelector(`#todo-${todo.id} .remem-bin`);
-        bin.addEventListener(event, callback);
-    }
-
-    const setCheckBoxEvent = (todo, event, callback) => {
-        const checkbox = document.querySelector(`#todo-${todo.id} .remem-done`);
-        checkbox.addEventListener(event, callback);
-    }
-
-    const setNewButtonEvent = (event, callback) => {
-        const newButton = document.querySelector('.remem-new-container');
-        debugger;
-        newButton.addEventListener(event, callback);
-    }
-
     return {
-        todoDialog, getActiveCategoryId, addTodo, updateTodo, deleteRow,
-        setBinEvent, setCheckBoxEvent, setNewButtonEvent
+        todoDialog, getActiveCategoryId, addTodo, updateTodo, deleteRow
     }
 })();
 

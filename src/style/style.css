@@ -14,12 +14,12 @@ body {
     margin: auto;
     font-size: x-large;
     background-color: var(--color-1);
-    width: 70%;
+    width: 80%;
 }
 
 @media only screen and (max-width: 1170px) {
     body {
-        width: 80%
+        width: 90%
     }
 }
 
@@ -119,7 +119,7 @@ th, td, tr {
     background-color: var(--color-2);
 }
 
-.todo-row.done .remem-done:hover {
+.todo-row.done .remem-done-container:hover {
     background-color: var(--color-5);
 }
 
@@ -160,15 +160,15 @@ tr .icono-plus:hover {
     height: 1.3em;
 }
 
-.todo-row:hover .remem-done {
+.todo-row:hover .remem-done-container {
     border-color: var(--color-3);
 }
 
-.todo-row .remem-done:hover {
+.todo-row .remem-done-container:hover {
     background-color: var(--color-6);
 }
 
-.todo-row .remem-done {
+.todo-row .remem-done-container {
     border: solid 2px var(--color-2)
 }
 
