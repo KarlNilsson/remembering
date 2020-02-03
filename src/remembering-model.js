@@ -93,9 +93,10 @@ const categoryModel = (() => {
         storage['category'] = JSON.stringify(_categoryMap);
     }
 
-    const addCategory = (data) => {
+    const createCategory = (data) => {
         const newCategory = category(data['name']);
         _categoryMap[_id] = newCategory;
+        return newCategory;
     }
 
     const editCategory = (id, data) => {
@@ -129,7 +130,7 @@ const categoryModel = (() => {
     }
 
     return {
-        addCategory, editCategory, deleteCategory, addTodo, removeTodo,
+        createCategory, editCategory, deleteCategory, addTodo, removeTodo,
         getAllTodos, getCategory, getAllCategories, loadStorage, store
     }
 })();

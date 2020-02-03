@@ -29,7 +29,8 @@ const controller = (() => {
         Object.keys(storage['category']).forEach(key => {
             view.addCategory(storage['category'][key]);
         })
-        // Set active category
+        // Set active category (last active category from localStorage)
+        view.setActiveCategory(view.getActiveCategory());
 
         // Change this to be todos for current active category
         Object.keys(storage['todo']).forEach(key => { 
@@ -39,16 +40,29 @@ const controller = (() => {
 
     const addInitialListeners = () => {
         // Add new button listener
-        const newButton = document.querySelector('.remem-new-container');
-        newButton.addEventListener('click', () => {
+        const newTodoButton = document.querySelector(
+            '.todo-container .remem-new-container'
+        );
+        newTodoButton.addEventListener('click', () => {
             const category = activeCategory();
             view.todoDialog((data) => {
                 data['category'] = category;
                 const todo = todoModel.createTodo(data);
-                todoModel.store(localStorage);
+                model.store();
                 view.addTodo(todo);
             })
         });
+
+        const newCategoryButton = document.querySelector(
+            '.category-container .remem-new-container'
+        );
+        newCategoryButton.addEventListener('click', () => {
+            view.categoryDialog((data) => {
+                const category = categoryModel.createCategory(data);
+                model.store();
+                view.addCategory(category);
+            })
+        })
 
 
 
@@ -93,20 +107,36 @@ const controller = (() => {
         });
         
         // Add onclick event for all categories
-        const category = document.querySelector('.remem-list-item');
-        category.addEventListener('click', e => {
-            view.categoryDialog((data) => {
-                const id = category.id.split('category-')[1];
-                categoryModel.editCategory(id, data);
-                view.updateCategory(categoryModel.getCategory(id));
-                categoryModel.store(localStorage);
-            });
-        })
+        const categoryList = document.querySelector('ul.category-list');
+        categoryList.addEventListener('click', e => {
+            let listItem = e.target;
+            while (!listItem.className.includes('remem-list-item')) {
+                if (listItem.localName === 'ul') {
+                    // We clicked in the list, but not on any item
+                    return;
+                }
+                listItem = listItem.parentNode;
+            }
+
+            const id = listItem.id.split('category-')[1];
+            if (Array.from(listItem.classList).includes('active')) {
+                const category = categoryModel.getCategory(id);
+                view.categoryDialog((data) => {
+                    categoryModel.editCategory(id, data);
+                    view.updateCategory(categoryModel.getCategory(id));
+                    categoryModel.store(localStorage);
+                }, category);
+            }
+            else {
+                view.setActiveCategory(listItem);
+                const todos = categoryModel.getAllTodos(id);
+                view.clearTable();
+                Object.keys(todos).forEach(key => { 
+                    view.addTodo(todos[key]);
+                })
+            }
+        });
     }
-
-    const addTodoListener = (todoId) => {
-
-    };
 
     return { initialize };
 

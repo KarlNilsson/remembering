@@ -41,8 +41,25 @@ body {
     min-width: 25em;
 }
 
+.remem-list-header {
+    display: flex;
+    justify-content: left;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid var(--color-3);
+}
+
+.remem-list-header .remem-new-container {
+    margin: 0 1em;
+}
+
 .remem-list {
     padding: 1rem;
+}
+
+.remem-list-header h3 {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 ul {
@@ -138,9 +155,9 @@ tr:first {
 .remem-new-container {
     display: flex;
     justify-content: center;
+    margin: auto;
     width: 1.3em;
     height: 1.3em;
-    margin: auto;margin-bottom: 0;
 }
 
 .icono-plus {

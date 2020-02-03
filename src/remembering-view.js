@@ -165,7 +165,6 @@ const view = (() => {
     }
 
     const categoryDialog = (callback, category={}) => {
-        debugger;
         const modalContainer = createModal();
         modalContainer.focus();
 
@@ -230,10 +229,19 @@ const view = (() => {
         return submitButton;
     }
     
-    const getActiveCategoryId = () => {
-        return document.querySelector('.category-item.active').id;
+    const getActiveCategory = () => {
+        const activeCategory = document.querySelector('.category-item.active');
+        if (activeCategory === null) {
+            return document.querySelector('.category-item');
+        }
+        return activeCategory;
     }
 
+    const setActiveCategory = (listItem) => {
+        const activeCategory = getActiveCategory();
+        activeCategory.classList.remove('active');
+        listItem.classList.add('active');
+    }
 
     // Move to todo-view
     const addTodo = (todo) => {
@@ -271,13 +279,15 @@ const view = (() => {
     }
 
     const clearTable = () => {
-        const table = document.querySelector('.todo-container table');
-        Array.from(table.childNodes).forEach(node => table.removeChild(node));
+        const table = document.querySelector('table');
+        const rows = Array.from(table.querySelectorAll('.todo-row'));
+        rows.forEach(node => table.removeChild(node));
     }
 
     return {
-        initializeView, todoDialog, categoryDialog, getActiveCategoryId,
-        addTodo, updateTodo, deleteRow, addCategory, updateCategory, clearTable
+        initializeView, todoDialog, categoryDialog, getActiveCategory,
+        setActiveCategory, addTodo, updateTodo, deleteRow, addCategory,
+        updateCategory, clearTable
     }
 })();
 

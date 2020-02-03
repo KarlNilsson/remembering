@@ -25,11 +25,13 @@ const todoView = (() => {
         row.id = `todo-${todo['id']}`;
         const doneTD = document.createElement('td');
         doneTD.classList.add('remem-icon-td');
+        doneTD.title = 'Mark as done/undone';
         const titleTD = document.createElement('td');
         const dueDateTD = document.createElement('td');
         const statusTD = document.createElement('td');
         statusTD.classList.add('remem-icon-td');
         const binContainer = document.createElement('div');
+        binContainer.title = 'Remove';
         const bin = document.createElement('div');
         const doneContainer = document.createElement('div');
         const done = document.createElement('div');
@@ -99,6 +101,7 @@ const todoView = (() => {
         trDone.appendChild(newContainer);
         newContainer.classList.add('remem-new-container')
         const newButton = document.createElement('div');
+        newButton.title = 'Create new todo';
         newContainer.appendChild(newButton);
         newButton.classList.add('icono-plus');
 
