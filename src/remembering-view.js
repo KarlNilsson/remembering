@@ -1,7 +1,7 @@
 import { todoView } from './todo-view.js';
 import { categoryView } from './category-view.js';
-import './style/style.css';
 import 'icono';
+import './style/style.css';
 
 const view = (() => {
 
@@ -165,6 +165,7 @@ const view = (() => {
     }
 
     const categoryDialog = (callback, category={}) => {
+        debugger;
         const modalContainer = createModal();
         modalContainer.focus();
 
@@ -246,8 +247,9 @@ const view = (() => {
     }
 
     const addCategory = (category) => {
-        const listItem = categoryView.createCategory(category);
-        const list = document.querySelector('ul.remem-list');
+        const categoryList = document.querySelector('.category-list');
+        const categoryItem = categoryView.addCategory(category);
+        categoryList.appendChild(categoryItem);
     }
 
     const updateCategory = (category) => {
@@ -268,9 +270,14 @@ const view = (() => {
         return modalContainer;
     }
 
+    const clearTable = () => {
+        const table = document.querySelector('.todo-container table');
+        Array.from(table.childNodes).forEach(node => table.removeChild(node));
+    }
+
     return {
         initializeView, todoDialog, categoryDialog, getActiveCategoryId,
-        addTodo, updateTodo, deleteRow, updateCategory
+        addTodo, updateTodo, deleteRow, addCategory, updateCategory, clearTable
     }
 })();
 

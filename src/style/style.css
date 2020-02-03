@@ -135,7 +135,7 @@ tr:first {
     padding-top: 1.5em;
 }
 
-tr .remem-new-container {
+.remem-new-container {
     display: flex;
     justify-content: center;
     width: 1.3em;
@@ -143,13 +143,15 @@ tr .remem-new-container {
     margin: auto;margin-bottom: 0;
 }
 
-tr .icono-plus {
+.icono-plus {
+    min-width: 30px;
+    min-height: 30px;
     color: var(--color-6);
     border: solid 2px var(--color-6);
     border-radius: 50%;
 }
 
-tr .icono-plus:hover {
+.icono-plus:hover {
     color: var(--color-3);
     background-color: var(--color-6);
     border-color: var(--color-3);

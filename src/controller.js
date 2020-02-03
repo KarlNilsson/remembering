@@ -23,6 +23,12 @@ const controller = (() => {
             storage['todo'] = JSON.stringify({});
         }
         // Load categories
+        if (storage['category'] === undefined) {
+            storage['category'] = JSON.stringify({});
+        }
+        Object.keys(storage['category']).forEach(key => {
+            view.addCategory(storage['category'][key]);
+        })
         // Set active category
 
         // Change this to be todos for current active category

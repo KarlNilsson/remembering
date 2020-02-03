@@ -69,14 +69,7 @@ const todoModel = (() => {
 const categoryModel = (() => {
 
     let _id = 0;
-    const _categoryMap =
-    {
-        // 1: {
-        //     id: 1,
-        //     name: 'I\'m a category',
-        //     todos: {},
-        // }
-    };
+    const _categoryMap = {};
 
     const category = (name) => {
         return {
