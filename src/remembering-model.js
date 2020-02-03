@@ -1,7 +1,6 @@
 const todoModel = (() => {
     let _id = 0;
     const _todoMap = {};
-    let _storage = localStorage;
 
     const displayIndex = () => {
         console.log(_id);
@@ -38,11 +37,8 @@ const todoModel = (() => {
         return _todoMap;
     }
 
-    const store = (storage=null) => {
-        if (storage === null || _storage !== storage ) {
-            _storage = storage;
-        }
-        _storage['todo'] = JSON.stringify(_todoMap);
+    const store = (storage) => {
+        storage['todo'] = JSON.stringify(_todoMap);
     }
 
     const getTodo = (id) => {
@@ -81,7 +77,6 @@ const categoryModel = (() => {
         //     todos: {},
         // }
     };
-    let _storage = localStorage;
 
     const category = (name) => {
         return {
@@ -101,8 +96,8 @@ const categoryModel = (() => {
         return _categoryMap;
     }
 
-    const store = () => {
-        _storage.setItem('category', JSON.stringify(_categoryMap));
+    const store = (storage) => {
+        storage['category'] = JSON.stringify(_categoryMap);
     }
 
     const addCategory = (data) => {
@@ -114,7 +109,6 @@ const categoryModel = (() => {
         Object.keys(data).forEach(key => {
             _categoryMap[id][key] = data[key];
         });
-        store();
     };
 
     const deleteCategory = (id) => {
@@ -143,7 +137,7 @@ const categoryModel = (() => {
 
     return {
         addCategory, editCategory, deleteCategory, addTodo, removeTodo,
-        getAllTodos, getCategory, getAllCategories, loadStorage
+        getAllTodos, getCategory, getAllCategories, loadStorage, store
     }
 })();
 
@@ -151,11 +145,19 @@ const model = (() => {
     let _storage = null;
 
     const loadStorage = () => {
-        todoModel.loadStorage(localStorage);
-        categoryModel.loadStorage(localStorage);
+        if (_storage === null) {
+            console.warn('No storage to load from');
+            return;
+        }
+        todoModel.loadStorage(_storage);
+        categoryModel.loadStorage(_storage);
     }
 
     const getStorage = () => {
+        if (_storage === null) {
+            console.warn('No storage available');
+            return;
+        }
         return {
             category: categoryModel.getAllCategories(),
             todo: todoModel.getAllTodos()
