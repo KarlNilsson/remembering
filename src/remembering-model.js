@@ -1,7 +1,7 @@
 const todoModel = (() => {
     let _id = 0;
     const _todoMap = {};
-    let _storage;
+    let _storage = localStorage;
 
     const displayIndex = () => {
         console.log(_id);
@@ -61,21 +61,48 @@ const todoModel = (() => {
         _todoMap[id].done = !_todoMap[id].done;
         return _todoMap[id];
     }
+    
+    const getAllTodos = () => {
+        return _todoMap;
+    }
 
     return { displayIndex, createTodo, editTodo, deleteTodo, loadStorage,
-             getTodo, store, getTodoIds, switchStatus };
+             getTodo, store, getTodoIds, switchStatus, getAllTodos };
 })();
 
 const categoryModel = (() => {
 
     let _id = 0;
-    const _categoryMap = {};
+    const _categoryMap =
+    {
+        // 1: {
+        //     id: 1,
+        //     name: 'I\'m a category',
+        //     todos: {},
+        // }
+    };
+    let _storage = localStorage;
+
     const category = (name) => {
         return {
             id: ++_id,
             name: name,
             todos: {}
         }
+    }
+
+    const loadStorage = (storage) => {
+        const categories = JSON.parse(storage['category']);
+        Object.keys(categories).forEach(key => {
+            _id = Math.max(key, _id);
+            categories[key].id = _id;
+            _categoryMap[_id] = categories[key];
+        })
+        return _categoryMap;
+    }
+
+    const store = () => {
+        _storage.setItem('category', JSON.stringify(_categoryMap));
     }
 
     const addCategory = (data) => {
@@ -87,11 +114,16 @@ const categoryModel = (() => {
         Object.keys(data).forEach(key => {
             _categoryMap[id][key] = data[key];
         });
+        store();
     };
 
     const deleteCategory = (id) => {
         _categoryMap[id] = undefined;
     };
+
+    const getCategory = (id) => {
+        return _categoryMap[id];
+    }
 
     const addTodo = (categoryId, todoId) => {
         _categoryMap[categoryId].todos[todoId] = todoModel.getTodo(todoId);
@@ -105,10 +137,44 @@ const categoryModel = (() => {
         return _categoryMap[categoryId].todos;
     }
 
+    const getAllCategories = () => {
+        return _categoryMap;
+    }
+
     return {
         addCategory, editCategory, deleteCategory, addTodo, removeTodo,
-        getAllTodos
+        getAllTodos, getCategory, getAllCategories, loadStorage
     }
 })();
 
-export { todoModel, categoryModel };
+const model = (() => {
+    let _storage = null;
+
+    const loadStorage = () => {
+        todoModel.loadStorage(localStorage);
+        categoryModel.loadStorage(localStorage);
+    }
+
+    const getStorage = () => {
+        return {
+            category: categoryModel.getAllCategories(),
+            todo: todoModel.getAllTodos()
+        };
+    }
+
+    const setStorage = (storage) => {
+        _storage = storage;
+    }
+
+    const store = (storage=_storage) => {
+        if (_storage === null) {
+            console.warn('No storage to write to');
+            return;
+        }
+        todoModel.store(storage);
+        categoryModel.store(storage);
+    }
+    return { loadStorage, getStorage, setStorage, store }
+})();
+
+export { model, todoModel, categoryModel };

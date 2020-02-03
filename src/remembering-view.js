@@ -1,6 +1,46 @@
 import { todoView } from './todo-view.js';
+import { categoryView } from './category-view.js';
+import './style/style.css';
+import 'icono';
 
 const view = (() => {
+
+    const initializeView = () => {
+        const body = document.querySelector('body');
+        const headerContainer = createHeaderContainer();
+        body.appendChild(headerContainer);
+        const contentGridContainer = createContentGridContainer();
+        body.appendChild(contentGridContainer);
+        const contentGrid = createContentGrid();
+        contentGridContainer.appendChild(contentGrid);
+        const categoryList = categoryView.createCategoryList();
+        contentGrid.appendChild(categoryList);
+        const todo = todoView.createTodoTable();
+        contentGrid.appendChild(todo);
+        
+    }
+
+    const createHeaderContainer = () => {
+        const headerContainer = document.createElement('div');
+        headerContainer.classList.add('header-container');
+        const h1 = document.createElement('h1');
+        h1.classList.add('general-text');
+        h1.innerHTML = 'Remembering';
+        headerContainer.appendChild(h1);
+        return headerContainer;
+    }
+
+    const createContentGridContainer = () => {
+        const contentGridContainer = document.createElement('div');
+        contentGridContainer.id = 'content-grid-container';
+        return contentGridContainer;
+    }
+
+    const createContentGrid = () => {
+        const contentGrid = document.createElement('div');
+        contentGrid.classList.add('content-grid');
+        return contentGrid;
+    }
 
     const createInput = (name, content='', type='text') => {
 
@@ -64,11 +104,14 @@ const view = (() => {
         modalContainer.focus();
 
         const todoFormContainer = document.createElement('div');
-        todoFormContainer.classList.add('todo-form-container', 'general-text');
+        todoFormContainer.classList.add('form-container', 'general-text');
 
         const todoForm = document.createElement('div');
-        todoForm.classList.add('todo-form', 'general-text');
+        todoForm.classList.add('form', 'general-text');
         todoFormContainer.appendChild(todoForm);
+
+        modalContainer.appendChild(todoFormContainer);
+        modalContainer.style.visibility = 'visible';
         
         const title = createInput('Title', todo['title']);
         todoForm.appendChild(title);
@@ -101,10 +144,8 @@ const view = (() => {
             callback(values());
             clearModal();
         });
-        modalContainer.appendChild(todoFormContainer);
-        
-        modalContainer.style.visibility = 'visible';
-        modalContainer.addEventListener('keyup', (e) => {
+
+        modalContainer.addEventListener('keyup', (event) => {
             if (event.key === 'Escape') {
                 clearModal();
             }
@@ -123,17 +164,77 @@ const view = (() => {
         input.scrollTo(0, 0);
     }
 
-    const clearModal = () => {
-        const modalContainer = document.querySelector('.modal-container');
-        document.querySelector('body').removeChild(modalContainer);
+    const categoryDialog = (callback, category={}) => {
+        const modalContainer = createModal();
+        modalContainer.focus();
+
+        const categoryFormContainer = document.createElement('div');
+        categoryFormContainer.classList.add(
+            'form-container', 'general-text'
+        );
+
+        modalContainer.appendChild(categoryFormContainer);
+        modalContainer.style.visibility = 'visible';
+
+        const categoryForm = document.createElement('div');
+        categoryForm.classList.add('form', 'general-text');
+        categoryFormContainer.appendChild(categoryForm);
+
+        const name = createInput('Name', category['name']);
+        categoryForm.append(name);
+
+        const submitButton = createSubmitButton();
+        categoryForm.append(submitButton);
+
+        const values = () => {
+            return { name: name.querySelector('input').value }
+        };
+        
+        submitButton.addEventListener('click', () => {
+            callback(values());
+            clearModal();
+        });
+
+        modalContainer.addEventListener('keyup', (event) => {
+            if (event.key === 'Escape') {
+                clearModal();
+            }
+            else if (event.key === 'Enter') {
+                callback(values());
+                clearModal();
+            }
+        });
+        modalContainer.addEventListener('click', (e) => {
+            if (e.target === modalContainer) {
+                clearModal();
+            }
+        });
+
+        const input = name.querySelector('input')
+        input.focus();
+        input.scrollTo(0, 0);
     }
 
-    const categoryDialog = () => {};
+    const clearModal = () => {
+        const modalContainer = document.querySelector('.modal-container');
+        if (modalContainer !== null) {
+            document.querySelector('body').removeChild(modalContainer);
+        }
+    }
+
+    const createSubmitButton = () => {
+        const submitButton = document.createElement('button');
+        submitButton.classList.add('remem-button', 'remem-input', 'general-text');
+        submitButton.innerHTML = 'Submit';
+        return submitButton;
+    }
     
     const getActiveCategoryId = () => {
         return document.querySelector('.category-item.active').id;
     }
 
+
+    // Move to todo-view
     const addTodo = (todo) => {
         const row = todoView.generateTodoElements(todo);
         const table = document.querySelector('.todo-container table');
@@ -142,6 +243,15 @@ const view = (() => {
 
     const updateTodo = (todo) => {
         todoView.editTodoElement(todo);
+    }
+
+    const addCategory = (category) => {
+        const listItem = categoryView.createCategory(category);
+        const list = document.querySelector('ul.remem-list');
+    }
+
+    const updateCategory = (category) => {
+        categoryView.editCategoryElement(category);
     }
 
     const deleteRow = (id) => {
@@ -159,7 +269,8 @@ const view = (() => {
     }
 
     return {
-        todoDialog, getActiveCategoryId, addTodo, updateTodo, deleteRow
+        initializeView, todoDialog, categoryDialog, getActiveCategoryId,
+        addTodo, updateTodo, deleteRow, updateCategory
     }
 })();
 

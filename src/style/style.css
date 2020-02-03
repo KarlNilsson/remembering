@@ -190,18 +190,18 @@ tr .icono-plus:hover {
     outline: none;
 }
 
-.todo-form-container {
+.form-container {
     margin: auto;
     margin-top: 12rem;
     border: solid 2px var(--color-3);
     width: 50%;
 }
 
-.todo-form-container * {
+.form-container * {
     background-color: var(--color-1);
 }
 
-.todo-form {
+.form {
     padding: 3rem;
     overflow: hidden;
 }

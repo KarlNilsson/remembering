@@ -6,6 +6,19 @@ const todoView = (() => {
         STATUS: 3
     }
 
+    const createTodoTable = () => {
+        const todoTableContainer = document.createElement('div');
+        todoTableContainer.classList.add(
+            'remem-list-container', 'todo-container', 'general-text'
+        );
+        const todoTable = document.createElement('table');
+        todoTableContainer.appendChild(todoTable);
+
+        const header = todoView.generateTableHeader();
+        todoTable.appendChild(header);
+        return todoTableContainer;
+    }
+
     const generateTodoElements = (todo) => {
         const row = document.createElement('tr');
         row.classList.add('todo-row');
@@ -99,7 +112,10 @@ const todoView = (() => {
         return trHeaders;
     }
 
-    return { generateTodoElements, generateTableHeader, editTodoElement }
+    return {
+        createTodoTable, generateTodoElements, generateTableHeader,
+        editTodoElement
+    }
 })();
 
 export { todoView };

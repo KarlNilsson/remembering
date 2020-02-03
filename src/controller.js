@@ -1,4 +1,4 @@
-import { todoModel, categoryModel } from './remembering-model.js';
+import { model, todoModel, categoryModel } from './remembering-model.js';
 import { view } from './remembering-view.js';
 
 const controller = (() => {
@@ -9,6 +9,26 @@ const controller = (() => {
 
     const activeCategory = () => {
         return document.querySelector('.category-item.active').id;
+    }
+
+    const initialize = () => {
+        const storage = model.getStorage();
+        createFromStorage(storage);
+        addInitialListeners();
+
+    }
+
+    const createFromStorage = (storage) => {
+        if (storage['todo'] === undefined) {
+            storage['todo'] = JSON.stringify({});
+        }
+        // Load categories
+        // Set active category
+
+        // Change this to be todos for current active category
+        Object.keys(storage['todo']).forEach(key => { 
+            view.addTodo(storage['todo'][key]);
+        })
     }
 
     const addInitialListeners = () => {
@@ -24,7 +44,7 @@ const controller = (() => {
             })
         });
 
-        // Add onclick event for all categories
+
 
         // Onclick for table elements
         table().addEventListener('click', e => {
@@ -60,18 +80,29 @@ const controller = (() => {
                     data['category'] = activeCategory();
                     todoModel.editTodo(id, data);
                     view.updateTodo(currentTodo)
+                    todoModel.store(localStorage);
                 }, currentTodo);
             }
 
         });
         
+        // Add onclick event for all categories
+        const category = document.querySelector('.remem-list-item');
+        category.addEventListener('click', e => {
+            view.categoryDialog((data) => {
+                const id = category.id.split('category-')[1];
+                categoryModel.editCategory(id, data);
+                view.updateCategory(categoryModel.getCategory(id));
+                categoryModel.store(localStorage);
+            });
+        })
     }
 
     const addTodoListener = (todoId) => {
 
     };
 
-    return { addInitialListeners };
+    return { initialize };
 
 })();
 
