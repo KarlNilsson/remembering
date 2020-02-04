@@ -48,7 +48,7 @@ const todoModel = (() => {
     }
 
     const deleteTodo = (id) => {
-        _todoMap[id] = undefined;
+        delete _todoMap[id];
     }
 
     const getTodoIds = () => {
@@ -111,7 +111,13 @@ const categoryModel = (() => {
     };
 
     const deleteCategory = (id) => {
-        _categoryMap[id] = undefined;
+        const category = _categoryMap[id];
+        Object.keys(category.todos).forEach(todo => {
+            debugger;
+            todoModel.deleteTodo(todo);
+            delete category.todos[todo];
+        })
+        delete _categoryMap[id];
     };
 
     const getCategory = (id) => {

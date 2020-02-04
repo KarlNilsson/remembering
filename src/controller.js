@@ -77,7 +77,7 @@ const controller = (() => {
         );
         newCategoryButton.addEventListener('click', () => {
             view.categoryDialog((data) => {
-                const category = categoryModel.createCategory(data);
+                const category = categoryModel.createCategory(data.category);
                 model.store();
                 view.addCategory(category);
             })
@@ -141,9 +141,16 @@ const controller = (() => {
             if (Array.from(listItem.classList).includes('active')) {
                 const category = categoryModel.getCategory(id);
                 view.categoryDialog((data) => {
-                    categoryModel.editCategory(id, data);
-                    view.updateCategory(categoryModel.getCategory(id));
-                    model.store();
+                    if (data.action === 'submit') {
+                        categoryModel.editCategory(id, data.category);
+                        view.updateCategory(categoryModel.getCategory(id));
+                        model.store();
+                    }
+                    else if (data.action === 'delete') {
+                        categoryModel.deleteCategory(id);
+                        view.deleteCategory(id);
+                        model.store();
+                    }
                 }, category);
             }
             else {

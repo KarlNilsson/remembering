@@ -43,7 +43,17 @@ const categoryView = (() => {
         categoryElement.innerText = category.name;
     }
 
-    return { createCategoryList, addCategory, editCategoryElement };
+    const deleteCategoryElement = (id) => {
+        const categoryElement = document.querySelector(
+            `li.remem-list-item#category-${id}`
+        );
+        document.querySelector('ul.remem-list').removeChild(categoryElement);
+    }
+
+    return {
+        createCategoryList, addCategory, editCategoryElement,
+        deleteCategoryElement
+    };
 })();
 
 export { categoryView }

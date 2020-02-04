@@ -190,7 +190,7 @@ const view = (() => {
                 clearModal();
             }
         });
-        modalContainer.addEventListener('click', (e) => {
+        modalContainer.addEventListener('mousedown', (e) => {
             if (e.target === modalContainer) {
                 clearModal();
             }
@@ -219,39 +219,59 @@ const view = (() => {
         const name = createInput('Name', category['name']);
         categoryForm.append(name);
 
+        const values = () => {
+            return {
+                category: {
+                    name: name.querySelector('input').value
+                }
+            }
+        };
+
         const buttonDiv = document.createElement('div');
         buttonDiv.classList.add('remem-btn-grid');
         categoryForm.append(buttonDiv);
 
         const submitButton = createSubmitButton();
         buttonDiv.append(submitButton);
+        
+        submitButton.addEventListener('click', () => {
+            const data = values();
+            data['action'] = 'submit';
+            callback(data)
+            clearModal();
+        });
 
         const cancelButton = createCancelButton();
         buttonDiv.append(cancelButton);
-
-        const values = () => {
-            return { name: name.querySelector('input').value }
-        };
-        
-        submitButton.addEventListener('click', () => {
-            callback(values())
-            clearModal();
-        });
-
         cancelButton.addEventListener('click', () => {
             clearModal();
         });
+
+        // Don't create delete button if new object
+        if (Object.keys(category).length > 0)
+        {
+            const deleteButton = createDeleteButton();
+            buttonDiv.append(deleteButton);
+            deleteButton.addEventListener('click', () => {
+                const data = values();
+                data['action'] = 'delete';
+                callback(data);
+                clearModal();
+            })
+        }
 
         modalContainer.addEventListener('keyup', (e) => {
             if (e.key === 'Escape') {
                 clearModal();
             }
             else if (e.key === 'Enter') {
-                callback(values());
+                const data = values();
+                data['action'] = 'submit';
+                callback(data)
                 clearModal();
             }
         });
-        modalContainer.addEventListener('click', (e) => {
+        modalContainer.addEventListener('mousedown', (e) => {
             if (e.target === modalContainer) {
                 clearModal();
             }
@@ -264,26 +284,42 @@ const view = (() => {
 
     const clearModal = () => {
         const modalContainer = document.querySelector('.modal-container');
-        if (modalContainer !== null) {
+        const classes = Array.from(modalContainer.classList);
+        if (!(classes.includes('fade-out'))) {
             modalContainer.classList.add('fade-out');
             modalContainer.addEventListener('animationend', () => {
-                document.querySelector('body').removeChild(modalContainer);
+                if (modalContainer !== null) {
+                    document.querySelector('body').removeChild(modalContainer);
+                }
             });
         }
     }
 
     const createSubmitButton = () => {
         const submitButton = document.createElement('button');
-        submitButton.classList.add('remem-button', 'remem-input', 'general-text');
+        submitButton.classList.add(
+            'remem-button', 'remem-input', 'general-text', 'submit-button'
+        );
         submitButton.innerHTML = 'Submit';
         return submitButton;
     }
 
     const createCancelButton = () => {
         const cancelButton = document.createElement('button');
-        cancelButton.classList.add('remem-button', 'remem-input', 'general-text');
+        cancelButton.classList.add(
+            'remem-button', 'remem-input', 'general-text', 'cancel-button'
+        );
         cancelButton.innerHTML = 'Cancel';
         return cancelButton;
+    }
+
+    const createDeleteButton = () => {
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add(
+            'remem-button', 'remem-input', 'general-text', 'delete-button'
+        );
+        deleteButton.innerHTML = 'Delete';
+        return deleteButton;
     }
     
     const getActiveCategory = () => {
@@ -329,6 +365,10 @@ const view = (() => {
         categoryView.editCategoryElement(category);
     }
 
+    const deleteCategory = (id) => {
+        categoryView.deleteCategoryElement(id);
+    }
+
     const deleteRow = (id) => {
         const table = document.querySelector('.remem-list-container table');
         const row = table.querySelector(`tr#todo-${id}`);
@@ -353,7 +393,7 @@ const view = (() => {
         storeActiveCategory, loadStorage, setStorage, getStorage,
         loadStorage, initializeView, todoDialog, categoryDialog,
         getActiveCategory, setActiveCategory, addTodo, updateTodo, deleteRow,
-        addCategory, updateCategory, clearTable
+        addCategory, updateCategory, deleteCategory, clearTable
     }
 })();
 

@@ -274,7 +274,8 @@ input[type='date']::-webkit-inner-spin-button {
     font-size: x-large;
     clear: both;
     overflow: hidden;
-    border: solid 2px var(--color-2)
+    border: solid 2px var(--color-2);
+    min-width: 10em;
 }
 
 .remem-checkbox-container {
@@ -365,6 +366,7 @@ input[type='date']::-webkit-inner-spin-button {
 
 .remem-btn-grid .remem-button {
     margin-right: 0.5em;
+    min-width: 4em;
 }
 
 .remem-button:hover {
