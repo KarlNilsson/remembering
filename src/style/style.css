@@ -65,6 +65,10 @@ ul {
     list-style: none;
 }
 
+.remem-list-item {
+    padding: 0.2em;
+}
+
 .remem-list-item.active {
     display: flex;
     background-color: var(--color-2);
@@ -81,7 +85,7 @@ ul {
 }
 
 .category-item:hover {
-    background-color: var(--color-3);
+    background-color: var(--color-5);
 }
 
 .todo-container {
