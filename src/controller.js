@@ -12,13 +12,31 @@ const controller = (() => {
     }
 
     const initialize = () => {
-        const storage = model.getStorage();
-        createFromStorage(storage);
+        renderInitialView(model.getAllCategories());
         addInitialListeners();
 
     }
 
-    const createFromStorage = (storage) => {
+    const renderInitialView = (categories) => {
+        // Render all categories
+        Object.keys(categories).forEach(key => {
+            view.addCategory(categories[key]);
+        })
+
+        // Set active category
+        view.setActiveCategory(view.getActiveCategory());
+
+        // Load todos for active category
+        const id = view.getActiveCategory().id.split('category-')[1];
+        const todos = model.getCategory(id)['todos'];
+        Object.keys(todos).forEach(key => {
+            view.addTodo(todos[key]);
+        });
+
+    }
+
+    // This doesn't create the model. What's going on?!
+    const createModelFromStorage = (storage) => {
         if (storage['todo'] === undefined) {
             storage['todo'] = JSON.stringify({});
         }
@@ -26,6 +44,7 @@ const controller = (() => {
         if (storage['category'] === undefined) {
             storage['category'] = JSON.stringify({});
         }
+
         Object.keys(storage['category']).forEach(key => {
             view.addCategory(storage['category'][key]);
         })
@@ -44,10 +63,10 @@ const controller = (() => {
             '.todo-container .remem-new-container'
         );
         newTodoButton.addEventListener('click', () => {
-            const category = activeCategory();
+            const categoryId = activeCategory().split('category-')[1];
             view.todoDialog((data) => {
-                data['category'] = category;
-                const todo = todoModel.createTodo(data);
+                data['category'] = categoryId;
+                const todo = model.createTodo(data);
                 model.store();
                 view.addTodo(todo);
             })
@@ -82,15 +101,15 @@ const controller = (() => {
 
             if (className.includes('remem-bin')) {
                 const category = activeCategory();
-                todoModel.deleteTodo(id);
-                todoModel.store(localStorage);
+                model.deleteTodo(id)
+                model.store();
                 view.deleteRow(id);
 
             }
             else if (className.includes('remem-done')) {
                 todoModel.switchStatus(id);
                 view.updateTodo(todoModel.getTodo(id));
-                todoModel.store(localStorage);
+                model.store();
             }
             // If we click anywhere else on the todo, we want to edit it
             else {
@@ -100,7 +119,7 @@ const controller = (() => {
                     data['category'] = activeCategory();
                     todoModel.editTodo(id, data);
                     view.updateTodo(currentTodo)
-                    todoModel.store(localStorage);
+                    model.store();
                 }, currentTodo);
             }
 
@@ -124,11 +143,12 @@ const controller = (() => {
                 view.categoryDialog((data) => {
                     categoryModel.editCategory(id, data);
                     view.updateCategory(categoryModel.getCategory(id));
-                    categoryModel.store(localStorage);
+                    model.store();
                 }, category);
             }
             else {
                 view.setActiveCategory(listItem);
+                view.storeActiveCategory();
                 const todos = categoryModel.getAllTodos(id);
                 view.clearTable();
                 Object.keys(todos).forEach(key => { 

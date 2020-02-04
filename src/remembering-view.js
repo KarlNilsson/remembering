@@ -5,6 +5,34 @@ import './style/style.css';
 
 const view = (() => {
 
+    let _activeCategory;
+    let _activeCategoryId;
+    let _storage = null;
+
+    const storeActiveCategory = (storage=_storage) => {
+        if (storage === null ) {
+            console.warn('No storage to load from');
+            return;
+        }
+        storage.activeCategory = _activeCategoryId;
+    }
+
+    const loadStorage = (storage=_storage) => {
+        if (storage === null) {
+            console.warn('No storage to load from');
+            return;
+        }
+        _activeCategoryId = JSON.parse(storage.activeCategory);
+    }
+
+    const setStorage = (storage) => {
+        _storage = storage;
+    }
+
+    const getStorage = () => {
+        return _storage;
+    }
+
     const initializeView = () => {
         const body = document.querySelector('body');
         const headerContainer = createHeaderContainer();
@@ -230,17 +258,25 @@ const view = (() => {
     }
     
     const getActiveCategory = () => {
-        const activeCategory = document.querySelector('.category-item.active');
+        if (_activeCategory !== undefined) {
+            return _activeCategory;
+        }
+
+        const activeCategory = document.querySelector(
+            `.category-item#category-${_activeCategoryId}`
+        );
         if (activeCategory === null) {
             return document.querySelector('.category-item');
         }
         return activeCategory;
     }
 
-    const setActiveCategory = (listItem) => {
+    const setActiveCategory = (listItem=null) => {
         const activeCategory = getActiveCategory();
         activeCategory.classList.remove('active');
         listItem.classList.add('active');
+        _activeCategory = listItem;
+        _activeCategoryId = listItem.id.split('category-')[1];
     }
 
     // Move to todo-view
@@ -285,9 +321,10 @@ const view = (() => {
     }
 
     return {
-        initializeView, todoDialog, categoryDialog, getActiveCategory,
-        setActiveCategory, addTodo, updateTodo, deleteRow, addCategory,
-        updateCategory, clearTable
+        storeActiveCategory, loadStorage, setStorage, getStorage,
+        loadStorage, initializeView, todoDialog, categoryDialog,
+        getActiveCategory, setActiveCategory, addTodo, updateTodo, deleteRow,
+        addCategory, updateCategory, clearTable
     }
 })();
 

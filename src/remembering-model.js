@@ -85,6 +85,9 @@ const categoryModel = (() => {
             _id = Math.max(key, _id);
             categories[key].id = _id;
             _categoryMap[_id] = categories[key];
+            for (let todo in _categoryMap[_id].todos) {
+                todoModel.getAllTodos()[todo] = _categoryMap[_id].todos[todo];
+            }
         })
         return _categoryMap;
     }
@@ -113,8 +116,8 @@ const categoryModel = (() => {
         return _categoryMap[id];
     }
 
-    const addTodo = (categoryId, todoId) => {
-        _categoryMap[categoryId].todos[todoId] = todoModel.getTodo(todoId);
+    const addTodo = (categoryId, todo) => {
+        _categoryMap[categoryId].todos[todo.id] = todo;
     };
 
     const removeTodo = (categoryId, todoId) => {
@@ -143,7 +146,6 @@ const model = (() => {
             console.warn('No storage to load from');
             return;
         }
-        todoModel.loadStorage(_storage);
         categoryModel.loadStorage(_storage);
     }
 
@@ -170,7 +172,31 @@ const model = (() => {
         todoModel.store(storage);
         categoryModel.store(storage);
     }
-    return { loadStorage, getStorage, setStorage, store }
+
+    const createTodo = (data) => {
+        const todo = todoModel.createTodo(data);
+        categoryModel.addTodo(todo.category, todo);
+        return todo;
+    }
+
+    const deleteTodo = (todoId) => {
+        const todo = todoModel.getTodo(todoId);
+        todoModel.deleteTodo(todoId);
+        categoryModel.removeTodo(todo.category, todoId)
+    }
+
+    const getAllCategories = () => {
+        return categoryModel.getAllCategories();
+    }
+
+    const getCategory = (id) => {
+        return categoryModel.getCategory(id);
+    }
+
+    return {
+        loadStorage, getStorage, setStorage, store, createTodo, 
+        deleteTodo, getAllCategories, getCategory
+    }
 })();
 
 export { model, todoModel, categoryModel };

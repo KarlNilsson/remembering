@@ -93,8 +93,11 @@ const todoView = (() => {
         const trHeaders = document.createElement('tr');
 
         const trDone = document.createElement('th');
+        trDone.classList.add('remem-done');
         const trTitle = document.createElement('th');
+        trTitle.classList.add('remem-title');
         const trDueDate = document.createElement('th');
+        trDueDate.classList.add('remem-due-date');
         const trStatus = document.createElement('th');
 
         const newContainer = document.createElement('div');
