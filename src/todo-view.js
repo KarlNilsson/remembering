@@ -66,7 +66,7 @@ const todoView = (() => {
 
     }
 
-    const editTodoElement = (todo) => {
+    const updateTodoElement = (todo) => {
         const row = document.querySelector(`#todo-${todo['id']}`);
         const childNodes = row.childNodes;
         const titleTD = childNodes[_trIndex.TITLE];
@@ -120,7 +120,7 @@ const todoView = (() => {
 
     return {
         createTodoTable, generateTodoElements, generateTableHeader,
-        editTodoElement
+        updateTodoElement
     }
 })();
 

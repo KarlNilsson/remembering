@@ -1,5 +1,6 @@
 import { todoView } from './todo-view.js';
 import { categoryView } from './category-view.js';
+import { modalView } from './modal-view.js';
 import 'icono';
 import './style/style.css';
 
@@ -70,63 +71,6 @@ const view = (() => {
         return contentGrid;
     }
 
-    const createInput = (name, content='', type='text') => {
-
-        const inputDiv = document.createElement('div');
-        inputDiv.classList.add('input-div');
-        inputDiv.id = name;
-    
-        const inputElement = document.createElement('input');
-        inputElement.classList.add('remem-input', 'general-text');
-        inputElement.type = type;
-        inputElement.id = name;
-        if (content !== '') {
-            inputElement.value = content;
-        }
-        else if (type === 'date') {
-            const date = new Date();
-            inputElement.value = date.getFullYear().toString() +
-            '-' + (date.getMonth() + 1).toString().padStart(2, 0) + 
-            '-' + date.getDate().toString().padStart(2, 0);
-        }
-    
-        const labelElement = document.createElement('label');
-        labelElement.setAttribute('for', name);
-        labelElement.innerHTML = name;
-    
-        inputDiv.appendChild(labelElement);
-        inputDiv.appendChild(inputElement);
-        return inputDiv;
-    }
-
-    const createCheckbox = (name, content=false) => {
-        const inputDiv = document.createElement('div');
-        inputDiv.classList.add('remem-input-div');
-        inputDiv.id = name;
-    
-        const inputContainer = document.createElement('label');
-        inputContainer.classList.add('remem-checkbox-container');
-    
-        const inputElement = document.createElement('input');
-        inputElement.type = 'checkbox';
-    
-        const customSpan = document.createElement('span');
-        customSpan.classList.add('remem-checkbox');
-        if (content) {
-            customSpan.classList.add('checked');
-        }
-        customSpan.addEventListener('click', e => {
-            e.target.classList.toggle('checked');
-        });
-    
-        inputContainer.appendChild(inputElement);
-        inputContainer.appendChild(customSpan);
-        inputDiv.innerText = name;
-        inputDiv.appendChild(inputContainer);
-    
-        return inputDiv;
-    }
-
     const todoDialog = (callback, todo={}) => {
         const modalContainer = createModal();
         modalContainer.focus();
@@ -141,25 +85,25 @@ const view = (() => {
         modalContainer.appendChild(todoFormContainer);
         modalContainer.style.visibility = 'visible';
         
-        const title = createInput('Title', todo['title']);
+        const title = modalView.createInput('Title', todo['title']);
         todoForm.appendChild(title);
-        const description = createInput('Description', todo['description']);
+        const description = modalView.createInput('Description', todo['description']);
         todoForm.appendChild(description);
-        const dueDate = createInput('Due date', todo['dueDate'], 'date',);
+        const dueDate = modalView.createInput('Due date', todo['dueDate'], 'date',);
         todoForm.appendChild(dueDate);
-        const prio = createCheckbox('Priority', todo['priority']);
+        const prio = modalView.createCheckbox('Priority', todo['priority']);
         todoForm.appendChild(prio);
-        const done = createCheckbox('Done', todo['done']);
+        const done = modalView.createCheckbox('Done', todo['done']);
         todoForm.appendChild(done);
 
         const buttonDiv = document.createElement('div');
         buttonDiv.classList.add('remem-btn-grid');
         todoForm.append(buttonDiv);
 
-        const submitButton = createSubmitButton();
+        const submitButton = modalView.createSubmitButton();
         buttonDiv.appendChild(submitButton);
 
-        const cancelButton = createCancelButton();
+        const cancelButton = modalView.createCancelButton();
         buttonDiv.append(cancelButton);
 
 
@@ -216,7 +160,7 @@ const view = (() => {
         categoryForm.classList.add('form', 'general-text');
         categoryFormContainer.appendChild(categoryForm);
 
-        const name = createInput('Name', category['name']);
+        const name = modalView.createInput('Name', category['name']);
         categoryForm.append(name);
 
         const values = () => {
@@ -231,7 +175,7 @@ const view = (() => {
         buttonDiv.classList.add('remem-btn-grid');
         categoryForm.append(buttonDiv);
 
-        const submitButton = createSubmitButton();
+        const submitButton = modalView.createSubmitButton();
         buttonDiv.append(submitButton);
         
         submitButton.addEventListener('click', () => {
@@ -241,7 +185,7 @@ const view = (() => {
             clearModal();
         });
 
-        const cancelButton = createCancelButton();
+        const cancelButton = modalView.createCancelButton();
         buttonDiv.append(cancelButton);
         cancelButton.addEventListener('click', () => {
             clearModal();
@@ -250,7 +194,7 @@ const view = (() => {
         // Don't create delete button if new object
         if (Object.keys(category).length > 0)
         {
-            const deleteButton = createDeleteButton();
+            const deleteButton = modalView.createDeleteButton();
             buttonDiv.append(deleteButton);
             deleteButton.addEventListener('click', () => {
                 const data = values();
@@ -294,33 +238,6 @@ const view = (() => {
             });
         }
     }
-
-    const createSubmitButton = () => {
-        const submitButton = document.createElement('button');
-        submitButton.classList.add(
-            'remem-button', 'remem-input', 'general-text', 'submit-button'
-        );
-        submitButton.innerHTML = 'Submit';
-        return submitButton;
-    }
-
-    const createCancelButton = () => {
-        const cancelButton = document.createElement('button');
-        cancelButton.classList.add(
-            'remem-button', 'remem-input', 'general-text', 'cancel-button'
-        );
-        cancelButton.innerHTML = 'Cancel';
-        return cancelButton;
-    }
-
-    const createDeleteButton = () => {
-        const deleteButton = document.createElement('button');
-        deleteButton.classList.add(
-            'remem-button', 'remem-input', 'general-text', 'delete-button'
-        );
-        deleteButton.innerHTML = 'Delete';
-        return deleteButton;
-    }
     
     const getActiveCategory = () => {
         if (_activeCategory !== undefined) {
@@ -344,7 +261,6 @@ const view = (() => {
         _activeCategoryId = listItem.id.split('category-')[1];
     }
 
-    // Move to todo-view
     const addTodo = (todo) => {
         const row = todoView.generateTodoElements(todo);
         const table = document.querySelector('.todo-container table');
@@ -352,7 +268,7 @@ const view = (() => {
     }
 
     const updateTodo = (todo) => {
-        todoView.editTodoElement(todo);
+        todoView.updateTodoElement(todo);
     }
 
     const addCategory = (category) => {
