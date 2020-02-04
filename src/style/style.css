@@ -214,6 +214,29 @@ tr:first {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1;
     outline: none;
+    animation: fade-in 0.2s ease-in-out;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.modal-container.fade-out {
+    animation: fade-out 0.2s ease-in-out
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 .form-container {
@@ -326,8 +349,16 @@ input[type='date']::-webkit-inner-spin-button {
     max-height: 1.5em;
 }
 
-.remem-button {
-    margin-top: 0.5em;
+.remem-input-div#Done {
+    margin-bottom: 0.5em;
+}
+
+.remem-btn-grid {
+    display: flex;
+}
+
+.remem-btn-grid .remem-button {
+    margin-right: 0.5em;
 }
 
 .remem-button:hover {

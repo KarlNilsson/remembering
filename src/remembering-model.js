@@ -7,8 +7,10 @@ const todoModel = (() => {
     };
 
     const createTodo = (data) => {
+        // Set _id to the highest available ID + 1. We don't reuse.
+        _id = Math.max(...Object.keys(_todoMap)) + 1;
         const todo = {
-            id: ++_id,
+            id: _id,
             title: data['title'],
             description: data['description'],
             dueDate: data['dueDate'],

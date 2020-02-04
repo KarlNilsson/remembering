@@ -152,11 +152,17 @@ const view = (() => {
         const done = createCheckbox('Done', todo['done']);
         todoForm.appendChild(done);
 
-    
-        const submitButton = document.createElement('button');
-        submitButton.classList.add('remem-button', 'remem-input', 'general-text');
-        submitButton.innerHTML = 'Submit';
-        todoForm.appendChild(submitButton);
+        const buttonDiv = document.createElement('div');
+        buttonDiv.classList.add('remem-btn-grid');
+        todoForm.append(buttonDiv);
+
+        const submitButton = createSubmitButton();
+        buttonDiv.appendChild(submitButton);
+
+        const cancelButton = createCancelButton();
+        buttonDiv.append(cancelButton);
+
+
         const values = () => {
             return {
                 title: title.querySelector('input').value,
@@ -173,11 +179,13 @@ const view = (() => {
             clearModal();
         });
 
-        modalContainer.addEventListener('keyup', (event) => {
-            if (event.key === 'Escape') {
+        cancelButton.addEventListener('click', () => clearModal());
+
+        modalContainer.addEventListener('keyup', (e) => {
+            if (e.key === 'Escape') {
                 clearModal();
             }
-            else if (event.key === 'Enter') {
+            else if (e.key === 'Enter') {
                 callback(values());
                 clearModal();
             }
@@ -211,23 +219,34 @@ const view = (() => {
         const name = createInput('Name', category['name']);
         categoryForm.append(name);
 
+        const buttonDiv = document.createElement('div');
+        buttonDiv.classList.add('remem-btn-grid');
+        categoryForm.append(buttonDiv);
+
         const submitButton = createSubmitButton();
-        categoryForm.append(submitButton);
+        buttonDiv.append(submitButton);
+
+        const cancelButton = createCancelButton();
+        buttonDiv.append(cancelButton);
 
         const values = () => {
             return { name: name.querySelector('input').value }
         };
         
         submitButton.addEventListener('click', () => {
-            callback(values());
+            callback(values())
             clearModal();
         });
 
-        modalContainer.addEventListener('keyup', (event) => {
-            if (event.key === 'Escape') {
+        cancelButton.addEventListener('click', () => {
+            clearModal();
+        });
+
+        modalContainer.addEventListener('keyup', (e) => {
+            if (e.key === 'Escape') {
                 clearModal();
             }
-            else if (event.key === 'Enter') {
+            else if (e.key === 'Enter') {
                 callback(values());
                 clearModal();
             }
@@ -246,7 +265,10 @@ const view = (() => {
     const clearModal = () => {
         const modalContainer = document.querySelector('.modal-container');
         if (modalContainer !== null) {
-            document.querySelector('body').removeChild(modalContainer);
+            modalContainer.classList.add('fade-out');
+            modalContainer.addEventListener('animationend', () => {
+                document.querySelector('body').removeChild(modalContainer);
+            });
         }
     }
 
@@ -255,6 +277,13 @@ const view = (() => {
         submitButton.classList.add('remem-button', 'remem-input', 'general-text');
         submitButton.innerHTML = 'Submit';
         return submitButton;
+    }
+
+    const createCancelButton = () => {
+        const cancelButton = document.createElement('button');
+        cancelButton.classList.add('remem-button', 'remem-input', 'general-text');
+        cancelButton.innerHTML = 'Cancel';
+        return cancelButton;
     }
     
     const getActiveCategory = () => {
