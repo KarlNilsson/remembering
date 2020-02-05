@@ -1,10 +1,9 @@
 const categoryView = (() => {
-
     const createCategoryList = (contentGrid) => {
         const categoryListContainer = document.createElement('div');
         categoryListContainer.classList.add(
             'remem-list-container', 'category-container'
-            );
+        );
 
         const listHeader = document.createElement('div');
         listHeader.classList.add('remem-list-header');
@@ -51,7 +50,9 @@ const categoryView = (() => {
     }
 
     return {
-        createCategoryList, addCategory, editCategoryElement,
+        createCategoryList,
+        addCategory,
+        editCategoryElement,
         deleteCategoryElement
     };
 })();

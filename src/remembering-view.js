@@ -5,25 +5,24 @@ import 'icono';
 import './style/style.css';
 
 const view = (() => {
-
     let _activeCategory;
     let _activeCategoryId;
     let _storage = null;
 
-    const storeActiveCategory = (storage=_storage) => {
-        if (storage === null ) {
+    const storeActiveCategory = (storage = _storage) => {
+        if (storage === null) {
             console.warn('No storage to save to');
             return;
         }
         storage.activeCategory = _activeCategoryId;
     }
 
-    const loadStorage = (storage=_storage) => {
+    const loadStorage = (storage = _storage) => {
         if (storage === null) {
             console.warn('No storage to load from');
             return;
         }
-        const storageCategory = storage['activeCategory'];
+        const storageCategory = storage.activeCategory;
         if (storageCategory === undefined) {
             return;
         }
@@ -88,7 +87,7 @@ const view = (() => {
         return contentGrid;
     }
 
-    const todoDialog = (callback, todo={}) => {
+    const todoDialog = (callback, todo = {}) => {
         const modalContainer = createModal();
         modalContainer.focus();
 
@@ -101,16 +100,16 @@ const view = (() => {
 
         modalContainer.appendChild(todoFormContainer);
         modalContainer.style.visibility = 'visible';
-        
-        const title = modalView.createInput('Title', todo['title']);
+
+        const title = modalView.createInput('Title', todo.title);
         todoForm.appendChild(title);
-        const description = modalView.createInput('Description', todo['description']);
+        const description = modalView.createInput('Description', todo.description);
         todoForm.appendChild(description);
-        const dueDate = modalView.createInput('Due date', todo['dueDate'], 'date',);
+        const dueDate = modalView.createInput('Due date', todo.dueDate, 'date');
         todoForm.appendChild(dueDate);
-        const prio = modalView.createCheckbox('Priority', todo['priority']);
+        const prio = modalView.createCheckbox('Priority', todo.priority);
         todoForm.appendChild(prio);
-        const done = modalView.createCheckbox('Done', todo['done']);
+        const done = modalView.createCheckbox('Done', todo.done);
         todoForm.appendChild(done);
 
         const buttonDiv = document.createElement('div');
@@ -123,16 +122,17 @@ const view = (() => {
         const cancelButton = modalView.createCancelButton();
         buttonDiv.append(cancelButton);
 
-
         const values = () => {
             return {
                 title: title.querySelector('input').value,
                 description: description.querySelector('input').value,
                 dueDate: dueDate.querySelector('input').value,
-                priority: Array.from(prio.querySelector('.remem-checkbox')
-                        .classList).includes('checked'),
-                done: Array.from(done.querySelector('.remem-checkbox')
-                        .classList).includes('checked')
+                priority: Array.from(
+                    prio.querySelector('.remem-checkbox').classList)
+                    .includes('checked'),
+                done: Array.from(
+                    done.querySelector('.remem-checkbox').classList)
+                    .includes('checked')
             }
         };
         submitButton.addEventListener('click', () => {
@@ -145,8 +145,7 @@ const view = (() => {
         modalContainer.addEventListener('keyup', (e) => {
             if (e.key === 'Escape') {
                 clearModal();
-            }
-            else if (e.key === 'Enter') {
+            } else if (e.key === 'Enter') {
                 callback(values());
                 clearModal();
             }
@@ -161,7 +160,7 @@ const view = (() => {
         input.scrollTo(0, 0);
     }
 
-    const categoryDialog = (callback, category={}) => {
+    const categoryDialog = (callback, category = {}) => {
         const modalContainer = createModal('category');
         modalContainer.focus();
 
@@ -177,7 +176,7 @@ const view = (() => {
         categoryForm.classList.add('form', 'general-text');
         categoryFormContainer.appendChild(categoryForm);
 
-        const name = modalView.createInput('Name', category['name']);
+        const name = modalView.createInput('Name', category.name);
         categoryForm.append(name);
 
         const values = () => {
@@ -194,10 +193,10 @@ const view = (() => {
 
         const submitButton = modalView.createSubmitButton();
         buttonDiv.append(submitButton);
-        
+
         submitButton.addEventListener('click', () => {
             const data = values();
-            data['action'] = 'submit';
+            data.action = 'submit';
             callback(data)
             clearModal();
         });
@@ -209,13 +208,12 @@ const view = (() => {
         });
 
         // Don't create delete button if new object
-        if (Object.keys(category).length > 0)
-        {
+        if (Object.keys(category).length > 0) {
             const deleteButton = modalView.createDeleteButton();
             buttonDiv.append(deleteButton);
             deleteButton.addEventListener('click', () => {
                 const data = values();
-                data['action'] = 'delete';
+                data.action = 'delete';
                 callback(data);
                 clearModal();
             })
@@ -224,10 +222,9 @@ const view = (() => {
         modalContainer.addEventListener('keyup', (e) => {
             if (e.key === 'Escape') {
                 clearModal();
-            }
-            else if (e.key === 'Enter') {
+            } else if (e.key === 'Enter') {
                 const data = values();
-                data['action'] = 'submit';
+                data.action = 'submit';
                 callback(data)
                 clearModal();
             }
@@ -255,7 +252,7 @@ const view = (() => {
             });
         }
     }
-    
+
     const getActiveCategory = () => {
         if (_activeCategory !== undefined && _activeCategory !== null) {
             return _activeCategory;
@@ -276,7 +273,7 @@ const view = (() => {
             setNewTodoStatus(false);
             return;
         }
-        
+
         const activeCategory = getActiveCategory();
         if (activeCategory !== null) {
             activeCategory.classList.remove('active');
@@ -338,10 +335,22 @@ const view = (() => {
     }
 
     return {
-        storeActiveCategory, loadStorage, setStorage, getStorage,
-        loadStorage, initializeView, todoDialog, categoryDialog,
-        getActiveCategory, setActiveCategory, addTodo, updateTodo, deleteRow,
-        addCategory, updateCategory, deleteCategory, clearTable
+        storeActiveCategory,
+        loadStorage,
+        setStorage,
+        getStorage,
+        initializeView,
+        todoDialog,
+        categoryDialog,
+        getActiveCategory,
+        setActiveCategory,
+        addTodo,
+        updateTodo,
+        deleteRow,
+        addCategory,
+        updateCategory,
+        deleteCategory,
+        clearTable
     }
 })();
 

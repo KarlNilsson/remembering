@@ -22,7 +22,7 @@ const todoView = (() => {
     const generateTodoElements = (todo) => {
         const row = document.createElement('tr');
         row.classList.add('todo-row');
-        row.id = `todo-${todo['id']}`;
+        row.id = `todo-${todo.id}`;
         const doneTD = document.createElement('td');
         doneTD.classList.add('remem-icon-td');
         doneTD.title = 'Mark as done/undone';
@@ -40,49 +40,46 @@ const todoView = (() => {
         binContainer.appendChild(bin);
         statusTD.appendChild(binContainer);
 
-        
         done.classList.add('remem-icon', 'remem-done');
         doneContainer.classList.add('remem-done', 'remem-done-container');
         doneContainer.appendChild(done)
         doneTD.appendChild(doneContainer);
 
-        titleTD.innerHTML = todo['title'] !== undefined ? todo['title'] : '';
-        dueDateTD.innerHTML = todo['dueDate'] !== undefined ? todo['dueDate'] : '';
-        if (todo['done']) {
+        titleTD.innerHTML = todo.title !== undefined ? todo.title : '';
+        dueDateTD.innerHTML = todo.dueDate !== undefined ? todo.dueDate : '';
+        if (todo.done) {
             row.classList.add('done');
             done.classList.add('icono-check')
-        } else {
         }
-        if (todo['priority']) {
+        if (todo.priority) {
             row.classList.add('prioritized');
         }
-        
+
         row.appendChild(doneTD);
         row.appendChild(titleTD);
         row.appendChild(dueDateTD);
         row.appendChild(statusTD);
-        
-        return row;
 
+        return row;
     }
 
     const updateTodoElement = (todo) => {
-        const row = document.querySelector(`#todo-${todo['id']}`);
+        const row = document.querySelector(`#todo-${todo.id}`);
         const childNodes = row.childNodes;
         const titleTD = childNodes[_trIndex.TITLE];
         const dueDateTD = childNodes[_trIndex.DUEDATE];
 
-        titleTD.innerHTML = todo['title'] !== undefined ? todo['title'] : '';
-        dueDateTD.innerHTML = todo['dueDate'] !== undefined ? todo['dueDate'] : '';
+        titleTD.innerHTML = todo.title !== undefined ? todo.title : '';
+        dueDateTD.innerHTML = todo.dueDate !== undefined ? todo.dueDate : '';
         const doneIcon = childNodes[_trIndex.DONE].querySelector('.remem-icon');
-        if (todo['done']) {
+        if (todo.done) {
             row.classList.add('done');
             doneIcon.classList.add('icono-check');
         } else {
             row.classList.remove('done');
             doneIcon.classList.remove('icono-check');
         }
-        if (todo['priority']) {
+        if (todo.priority) {
             row.classList.add('prioritized');
         } else {
             row.classList.remove('prioritized');
@@ -119,7 +116,9 @@ const todoView = (() => {
     }
 
     return {
-        createTodoTable, generateTodoElements, generateTableHeader,
+        createTodoTable,
+        generateTodoElements,
+        generateTableHeader,
         updateTodoElement
     }
 })();

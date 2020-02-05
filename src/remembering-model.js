@@ -7,12 +7,12 @@ const todoModel = (() => {
         _id = Math.max(Math.max(...Object.keys(_todoMap)) + 1, 0);
         const todo = {
             id: _id,
-            title: data['title'],
-            description: data['description'],
-            dueDate: data['dueDate'],
-            priority: data['priority'],
+            title: data.title,
+            description: data.description,
+            dueDate: data.dueDate,
+            priority: data.priority,
             done: false,
-            category: data['category'],
+            category: data.category,
         }
         _todoMap[_id] = todo;
         return todo;
@@ -26,7 +26,7 @@ const todoModel = (() => {
     }
 
     const loadStorage = (storage) => {
-        const todos = JSON.parse(storage['todo']);
+        const todos = JSON.parse(storage.todo);
         Object.keys(todos).forEach(key => {
             _id = Math.max(key, _id);
             todos[key].id = _id;
@@ -36,7 +36,7 @@ const todoModel = (() => {
     }
 
     const store = (storage) => {
-        storage['todo'] = JSON.stringify(_todoMap);
+        storage.todo = JSON.stringify(_todoMap);
     }
 
     const getTodo = (id) => {
@@ -51,19 +51,24 @@ const todoModel = (() => {
         _todoMap[id].done = !_todoMap[id].done;
         return _todoMap[id];
     }
-    
+
     const getAllTodos = () => {
         return _todoMap;
     }
 
     return {
-        createTodo, editTodo, deleteTodo, loadStorage, getTodo, store,
-        switchStatus, getAllTodos
+        createTodo,
+        editTodo,
+        deleteTodo,
+        loadStorage,
+        getTodo,
+        store,
+        switchStatus,
+        getAllTodos
     };
 })();
 
 const categoryModel = (() => {
-
     let _id = 0;
     const _categoryMap = {};
 
@@ -76,16 +81,16 @@ const categoryModel = (() => {
     }
 
     const loadStorage = (storage) => {
-        const categoryStorage = storage['category'];
+        const categoryStorage = storage.category;
         if (categoryStorage === undefined) {
             return;
         }
-        const categories = JSON.parse(storage['category']);
+        const categories = JSON.parse(storage.category);
         Object.keys(categories).forEach(key => {
             _id = Math.max(key, _id);
             categories[key].id = _id;
             _categoryMap[_id] = categories[key];
-            for (let todo in _categoryMap[_id].todos) {
+            for (const todo in _categoryMap[_id].todos) {
                 todoModel.getAllTodos()[todo] = _categoryMap[_id].todos[todo];
             }
         })
@@ -93,11 +98,11 @@ const categoryModel = (() => {
     }
 
     const store = (storage) => {
-        storage['category'] = JSON.stringify(_categoryMap);
+        storage.category = JSON.stringify(_categoryMap);
     }
 
     const createCategory = (data) => {
-        const newCategory = category(data['name']);
+        const newCategory = category(data.name);
         _categoryMap[_id] = newCategory;
         return newCategory;
     }
@@ -138,8 +143,16 @@ const categoryModel = (() => {
     }
 
     return {
-        createCategory, editCategory, deleteCategory, addTodo, removeTodo,
-        getAllTodos, getCategory, getAllCategories, loadStorage, store
+        createCategory,
+        editCategory,
+        deleteCategory,
+        addTodo,
+        removeTodo,
+        getAllTodos,
+        getCategory,
+        getAllCategories,
+        loadStorage,
+        store
     }
 })();
 
@@ -169,7 +182,7 @@ const model = (() => {
         _storage = storage;
     }
 
-    const store = (storage=_storage) => {
+    const store = (storage = _storage) => {
         if (_storage === null) {
             console.warn('No storage to write to');
             return;
@@ -199,8 +212,14 @@ const model = (() => {
     }
 
     return {
-        loadStorage, getStorage, setStorage, store, createTodo, 
-        deleteTodo, getAllCategories, getCategory
+        loadStorage,
+        getStorage,
+        setStorage,
+        store,
+        createTodo,
+        deleteTodo,
+        getAllCategories,
+        getCategory
     }
 })();
 
