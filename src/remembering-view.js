@@ -257,7 +257,7 @@ const view = (() => {
     }
     
     const getActiveCategory = () => {
-        if (_activeCategory !== undefined) {
+        if (_activeCategory !== undefined && _activeCategory !== null) {
             return _activeCategory;
         }
 
@@ -304,6 +304,8 @@ const view = (() => {
         const categoryList = document.querySelector('.category-list');
         const categoryItem = categoryView.addCategory(category);
         categoryList.appendChild(categoryItem);
+        clearTable();
+        setActiveCategory(categoryItem);
     }
 
     const updateCategory = (category) => {

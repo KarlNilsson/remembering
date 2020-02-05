@@ -127,8 +127,18 @@ const controller = (() => {
                     else if (data.action === 'delete') {
                         categoryModel.deleteCategory(id);
                         view.deleteCategory(id);
-                        view.clearTable();
                         model.store();
+                        const activeCategory = view.getActiveCategory();
+                        if (activeCategory !== null) {
+                            view.setActiveCategory(activeCategory);
+                            view.storeActiveCategory();
+                            const id = activeCategory.id.split('category-')[1];
+                            const todos = categoryModel.getAllTodos(id);
+                            view.clearTable();
+                            Object.keys(todos).forEach(key => { 
+                                view.addTodo(todos[key]);
+                            })
+                        }
                     }
                 }, category);
             }
