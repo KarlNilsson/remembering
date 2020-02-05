@@ -1,10 +1,15 @@
-import { model, todoModel, categoryModel } from './remembering-model.js';
+import { model } from './remembering-model.js';
 import { view } from './remembering-view.js';
 
 const controller = (() => {
     const table = () => {
         return document.querySelector('table')
     };
+
+    const activeCategoryId = () => {
+        const category = document.querySelector('.category-item.active').id;
+        return category.split('category-')[1];
+    }
 
     const activeCategory = () => {
         return document.querySelector('.category-item.active').id;
@@ -21,13 +26,12 @@ const controller = (() => {
             view.addCategory(categories[key]);
         })
 
-        const activeCategory = view.getActiveCategory();
-
+        const categoryElement = view.getActiveCategory();
         // Set active category
-        view.setActiveCategory(activeCategory);
+        view.setActiveCategory(categoryElement);
         // Load todos for active category
-        if (activeCategory !== null) {
-            const id = activeCategory.id.split('category-')[1];
+        if (activeCategory() !== null) {
+            const id = activeCategoryId();
             const todos = model.getCategory(id).todos;
             Object.keys(todos).forEach(key => {
                 view.addTodo(todos[key]);
@@ -44,11 +48,10 @@ const controller = (() => {
             if (Array.from(e.target.classList).includes('inactive')) {
                 return;
             }
-            const categoryId = activeCategory().split('category-')[1];
+            const categoryId = activeCategoryId();
             view.todoDialog((data) => {
                 data.category = categoryId;
                 const todo = model.createTodo(data);
-                model.store();
                 view.addTodo(todo);
             })
         });
@@ -58,8 +61,7 @@ const controller = (() => {
         );
         newCategoryButton.addEventListener('click', () => {
             view.categoryDialog((data) => {
-                const category = categoryModel.createCategory(data.category);
-                model.store();
+                const category = model.createCategory(data.category);
                 view.addCategory(category);
             })
         })
@@ -80,20 +82,18 @@ const controller = (() => {
 
             if (className.includes('remem-bin')) {
                 model.deleteTodo(id)
-                model.store();
                 view.deleteRow(id);
             } else if (className.includes('remem-done')) {
-                todoModel.switchStatus(id);
-                view.updateTodo(todoModel.getTodo(id));
-                model.store();
+                const todo = model.getTodo(id);
+                model.editTodo(id, { done: !todo.done });
+                view.updateTodo(todo);
             } else {
                 // If we click anywhere else on the todo, we want to edit it
-                const currentTodo = todoModel.getTodo(id);
+                const currentTodo = model.getTodo(id);
                 view.todoDialog((data) => {
-                    data.category = activeCategory();
-                    todoModel.editTodo(id, data);
+                    data.category = activeCategoryId();
+                    model.editTodo(id, data);
                     view.updateTodo(currentTodo)
-                    model.store();
                 }, currentTodo);
             }
         });
@@ -115,19 +115,17 @@ const controller = (() => {
                 const category = model.getCategory(id);
                 view.categoryDialog((data) => {
                     if (data.action === 'submit') {
-                        categoryModel.editCategory(id, data.category);
-                        view.updateCategory(categoryModel.getCategory(id));
-                        model.store();
+                        model.editCategory(id, data.category);
+                        view.updateCategory(model.getCategory(id));
                     } else if (data.action === 'delete') {
-                        categoryModel.deleteCategory(id);
+                        model.deleteCategory(id);
                         view.deleteCategory(id);
-                        model.store();
                         const activeCategory = view.getActiveCategory();
                         if (activeCategory !== null) {
                             view.setActiveCategory(activeCategory);
                             view.storeActiveCategory();
-                            const id = activeCategory.id.split('category-')[1];
-                            const todos = categoryModel.getAllTodos(id);
+                            const id = activeCategoryId();
+                            const todos = model.getAllTodosForCategory(id);
                             view.clearTable();
                             Object.keys(todos).forEach(key => {
                                 view.addTodo(todos[key]);
@@ -138,7 +136,7 @@ const controller = (() => {
             } else {
                 view.setActiveCategory(listItem);
                 view.storeActiveCategory();
-                const todos = categoryModel.getAllTodos(id);
+                const todos = model.getAllTodosForCategory(id);
                 view.clearTable();
                 Object.keys(todos).forEach(key => {
                     view.addTodo(todos[key]);
