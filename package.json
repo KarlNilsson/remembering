@@ -13,6 +13,7 @@
   "private": true,
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^6.8.0",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   },
