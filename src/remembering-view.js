@@ -23,6 +23,10 @@ const view = (() => {
             console.warn('No storage to load from');
             return;
         }
+        const storageCategory = storage['activeCategory'];
+        if (storageCategory === undefined) {
+            return;
+        }
         _activeCategoryId = JSON.parse(storage.activeCategory);
     }
 

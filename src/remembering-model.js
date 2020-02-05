@@ -76,6 +76,10 @@ const categoryModel = (() => {
     }
 
     const loadStorage = (storage) => {
+        const categoryStorage = storage['category'];
+        if (categoryStorage === undefined) {
+            return;
+        }
         const categories = JSON.parse(storage['category']);
         Object.keys(categories).forEach(key => {
             _id = Math.max(key, _id);
