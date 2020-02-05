@@ -2,10 +2,6 @@ const todoModel = (() => {
     let _id = 0;
     const _todoMap = {};
 
-    const displayIndex = () => {
-        console.log(_id);
-    };
-
     const createTodo = (data) => {
         // Set _id to the highest available ID + 1. We don't reuse.
         _id = Math.max(...Object.keys(_todoMap)) + 1;
@@ -51,10 +47,6 @@ const todoModel = (() => {
         delete _todoMap[id];
     }
 
-    const getTodoIds = () => {
-        return Object.keys(_todoMap);
-    }
-
     const switchStatus = (id) => {
         _todoMap[id].done = !_todoMap[id].done;
         return _todoMap[id];
@@ -64,8 +56,10 @@ const todoModel = (() => {
         return _todoMap;
     }
 
-    return { displayIndex, createTodo, editTodo, deleteTodo, loadStorage,
-             getTodo, store, getTodoIds, switchStatus, getAllTodos };
+    return {
+        createTodo, editTodo, deleteTodo, loadStorage, getTodo, store,
+        switchStatus, getAllTodos
+    };
 })();
 
 const categoryModel = (() => {

@@ -114,7 +114,7 @@ const controller = (() => {
 
             const id = listItem.id.split('category-')[1];
             if (Array.from(listItem.classList).includes('active')) {
-                const category = categoryModel.getCategory(id);
+                const category = model.getCategory(id);
                 view.categoryDialog((data) => {
                     if (data.action === 'submit') {
                         categoryModel.editCategory(id, data.category);
