@@ -145,7 +145,7 @@ const view = (() => {
     }
 
     const categoryDialog = (callback, category={}) => {
-        const modalContainer = createModal();
+        const modalContainer = createModal('category');
         modalContainer.focus();
 
         const categoryFormContainer = document.createElement('div');
@@ -255,10 +255,12 @@ const view = (() => {
 
     const setActiveCategory = (listItem=null) => {
         const activeCategory = getActiveCategory();
-        activeCategory.classList.remove('active');
-        listItem.classList.add('active');
-        _activeCategory = listItem;
-        _activeCategoryId = listItem.id.split('category-')[1];
+        if (activeCategory !== undefined) {
+            activeCategory.classList.remove('active');
+            listItem.classList.add('active');
+            _activeCategory = listItem;
+            _activeCategoryId = listItem.id.split('category-')[1];
+        }
     }
 
     const addTodo = (todo) => {
@@ -291,9 +293,9 @@ const view = (() => {
         table.removeChild(row);
     }
 
-    const createModal = () => {
+    const createModal = (type) => {
         const modalContainer = document.createElement('div');
-        modalContainer.classList.add('modal-container');
+        modalContainer.classList.add('modal-container', type);
         modalContainer.tabIndex = 0;
         document.querySelector('body').appendChild(modalContainer);
         return modalContainer;

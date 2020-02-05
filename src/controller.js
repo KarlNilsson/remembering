@@ -22,15 +22,18 @@ const controller = (() => {
             view.addCategory(categories[key]);
         })
 
+        const activeCategory = view.getActiveCategory();
+        
         // Set active category
-        view.setActiveCategory(view.getActiveCategory());
-
+        view.setActiveCategory(activeCategory);
         // Load todos for active category
-        const id = view.getActiveCategory().id.split('category-')[1];
-        const todos = model.getCategory(id)['todos'];
-        Object.keys(todos).forEach(key => {
-            view.addTodo(todos[key]);
-        });
+        if (activeCategory !== undefined) {
+            const id = activeCategory.id.split('category-')[1];
+            const todos = model.getCategory(id)['todos'];
+            Object.keys(todos).forEach(key => {
+                view.addTodo(todos[key]);
+            });
+        }
     }
 
     const addInitialListeners = () => {

@@ -8,7 +8,7 @@ const modalView = (() => {
         const inputElement = document.createElement('input');
         inputElement.classList.add('remem-input', 'general-text');
         inputElement.type = type;
-        inputElement.id = name;
+        inputElement.id = name.replace(' ','');
         if (content !== '') {
             inputElement.value = content;
         }

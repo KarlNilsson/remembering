@@ -227,6 +227,10 @@ tr:first {
     animation: fade-in 0.2s ease-in-out;
 }
 
+.modal-container.category .form-container{
+    width: 25%;
+}
+
 @keyframes fade-in {
     0% {
         opacity: 0;
@@ -270,6 +274,15 @@ input[type='date']::-webkit-inner-spin-button {
     display: none;
 }
 
+input[type='date']::-webkit-calendar-picker-indicator {
+    opacity: 1;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator:hover {
+    background-color: transparent;
+    color: var(--color-3)
+}
+
 .remem-input {
     max-width: 90%;
     margin-bottom: 0.5em;
@@ -280,6 +293,10 @@ input[type='date']::-webkit-inner-spin-button {
     overflow: hidden;
     border: solid 2px var(--color-2);
     min-width: 10em;
+}
+
+.remem-input:not(#Duedate):not(.remem-button) {
+    width: 90%;
 }
 
 .remem-checkbox-container {
