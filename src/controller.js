@@ -1,4 +1,4 @@
-import { model, todoModel, categoryModel } from './remembering-model.js';
+import { model, todoModel, categoryModel, model2 } from './remembering-model.js';
 import { view } from './remembering-view.js';
 
 const controller = (() => {
@@ -11,6 +11,7 @@ const controller = (() => {
     }
 
     const initialize = () => {
+        model2.initialize(localStorage);
         renderInitialView(model.getAllCategories());
         addInitialListeners();
     }
@@ -90,7 +91,7 @@ const controller = (() => {
                 // If we click anywhere else on the todo, we want to edit it
                 const currentTodo = todoModel.getTodo(id);
                 view.todoDialog((data) => {
-                    data.category = activeCategory();
+                    data.category = activeCategory().split('category-')[1];
                     todoModel.editTodo(id, data);
                     view.updateTodo(currentTodo)
                     model.store();
