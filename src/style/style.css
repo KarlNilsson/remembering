@@ -185,10 +185,15 @@ tr:first {
     border-radius: 50%;
 }
 
-.icono-plus:hover {
+.icono-plus:not(.inactive):hover {
     color: var(--color-3);
     background-color: var(--color-6);
     border-color: var(--color-3);
+}
+
+.icono-plus.inactive {
+    color: var(--color-2);
+    border-color: var(--color-2);
 }
 
 .todo-row .remem-icon-td {
@@ -229,6 +234,7 @@ tr:first {
 
 .modal-container.category .form-container{
     width: 25%;
+    min-width: 20em;
 }
 
 @keyframes fade-in {

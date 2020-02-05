@@ -4,7 +4,7 @@ const todoModel = (() => {
 
     const createTodo = (data) => {
         // Set _id to the highest available ID + 1. We don't reuse.
-        _id = Math.max(...Object.keys(_todoMap)) + 1;
+        _id = Math.max(Math.max(...Object.keys(_todoMap)) + 1, 0);
         const todo = {
             id: _id,
             title: data['title'],
@@ -111,7 +111,6 @@ const categoryModel = (() => {
     const deleteCategory = (id) => {
         const category = _categoryMap[id];
         Object.keys(category.todos).forEach(todo => {
-            debugger;
             todoModel.deleteTodo(todo);
             delete category.todos[todo];
         })

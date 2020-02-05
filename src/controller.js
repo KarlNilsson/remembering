@@ -27,7 +27,7 @@ const controller = (() => {
         // Set active category
         view.setActiveCategory(activeCategory);
         // Load todos for active category
-        if (activeCategory !== undefined) {
+        if (activeCategory !== null) {
             const id = activeCategory.id.split('category-')[1];
             const todos = model.getCategory(id)['todos'];
             Object.keys(todos).forEach(key => {
@@ -41,7 +41,10 @@ const controller = (() => {
         const newTodoButton = document.querySelector(
             '.todo-container .remem-new-container'
         );
-        newTodoButton.addEventListener('click', () => {
+        newTodoButton.addEventListener('click', e => {
+            if (Array.from(e.target.classList).includes('inactive')) {
+                return;
+            }
             const categoryId = activeCategory().split('category-')[1];
             view.todoDialog((data) => {
                 data['category'] = categoryId;
@@ -124,6 +127,7 @@ const controller = (() => {
                     else if (data.action === 'delete') {
                         categoryModel.deleteCategory(id);
                         view.deleteCategory(id);
+                        view.clearTable();
                         model.store();
                     }
                 }, category);

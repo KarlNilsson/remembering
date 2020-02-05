@@ -12,7 +12,7 @@ const view = (() => {
 
     const storeActiveCategory = (storage=_storage) => {
         if (storage === null ) {
-            console.warn('No storage to load from');
+            console.warn('No storage to save to');
             return;
         }
         storage.activeCategory = _activeCategoryId;
@@ -50,7 +50,20 @@ const view = (() => {
         contentGrid.appendChild(categoryList);
         const todo = todoView.createTodoTable();
         contentGrid.appendChild(todo);
-        
+    }
+
+    const setNewTodoStatus = (status) => {
+        const newContainer = document.querySelector(
+            '.todo-container .remem-new-container'
+        );
+        const newButton = newContainer.querySelector('.icono-plus');
+        if (status) {
+            newContainer.classList.remove('inactive');
+            newButton.classList.remove('inactive');
+        } else {
+            newContainer.classList.add('inactive');
+            newButton.classList.add('inactive');
+        }
     }
 
     const createHeaderContainer = () => {
@@ -257,14 +270,24 @@ const view = (() => {
         return activeCategory;
     }
 
-    const setActiveCategory = (listItem=null) => {
-        const activeCategory = getActiveCategory();
-        if (activeCategory !== undefined) {
-            activeCategory.classList.remove('active');
-            listItem.classList.add('active');
-            _activeCategory = listItem;
-            _activeCategoryId = listItem.id.split('category-')[1];
+    const setActiveCategory = (listItem) => {
+        if (listItem === null) {
+            _activeCategory = null;
+            setNewTodoStatus(false);
+            return;
         }
+        
+        const activeCategory = getActiveCategory();
+        if (activeCategory !== null) {
+            activeCategory.classList.remove('active');
+        } else {
+            setNewTodoStatus(false);
+        }
+        listItem.classList.add('active');
+        _activeCategory = listItem;
+        _activeCategoryId = listItem.id.split('category-')[1];
+        setNewTodoStatus(true);
+        storeActiveCategory();
     }
 
     const addTodo = (todo) => {
@@ -289,6 +312,7 @@ const view = (() => {
 
     const deleteCategory = (id) => {
         categoryView.deleteCategoryElement(id);
+        setActiveCategory(null);
     }
 
     const deleteRow = (id) => {
