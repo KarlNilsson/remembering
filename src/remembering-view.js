@@ -103,7 +103,9 @@ const view = (() => {
 
         const title = modalView.createInput('Title', todo.title);
         todoForm.appendChild(title);
-        const description = modalView.createInput('Description', todo.description);
+        const description = modalView.createInput(
+            'Description', todo.description
+        );
         todoForm.appendChild(description);
         const dueDate = modalView.createInput('Due date', todo.dueDate, 'date');
         todoForm.appendChild(dueDate);
