@@ -412,15 +412,32 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
         border-bottom: solid 4px var(--color-3);
     }
     
-    .general-text {
+    .general-text:not(.form) {
         font-size: larger;
+    }
+
+    .form-container {
+        width: 80%;
+        min-width: 15em;
     }
     
     h1.general-text {
-        font-size: 2em;
+        font-size: 2em !important;
+    }
+
+    h3.general-text {
+        font-size: 2em !important;
+    }
+
+    .remem-list-header .remem-new-container {
+        margin-top: auto;
+        margin-left: 2em;
+        margin-bottom: auto;
     }
 
     .remem-list-item {
+        text-align: center;
+        border: dashed 1px var(--color-2);
         padding: 0;
     }
 
@@ -436,6 +453,10 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
         transform: scale(1.4);
     }
 
+    .icono-check {
+        margin-left: 8px;
+    }
+
     tr.todo-row {
         padding: 1em;
     }
@@ -444,7 +465,12 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
         padding: calc(1em/2);
     }
 
+    .remem-list-item.active {
+        display: list-item;
+    }
+
     .remem-list-item.active::after {
-        content: '';
+        content: none;
+        margin-left: 0;
     }
 }

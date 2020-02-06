@@ -10,7 +10,9 @@ const categoryView = (() => {
         categoryListContainer.appendChild(listHeader);
 
         const newButtonContainer = document.createElement('div');
-        newButtonContainer.classList.add('remem-new-container');
+        newButtonContainer.classList.add(
+            'remem-new-container', 'remem-icon-td'
+        );
         listHeader.appendChild(newButtonContainer);
         const newButton = document.createElement('div');
         newButton.classList.add('icono-plus');
@@ -22,14 +24,18 @@ const categoryView = (() => {
         listHeader.appendChild(categoryHeader);
 
         const categoryList = document.createElement('ul');
-        categoryList.classList.add('remem-list', 'category-list', 'general-text');
+        categoryList.classList.add(
+            'remem-list', 'category-list', 'general-text'
+        );
         categoryListContainer.appendChild(categoryList);
         return categoryListContainer;
     }
 
     const addCategory = (category) => {
         const categoryItem = document.createElement('li');
-        categoryItem.classList.add('remem-list-item', 'category-item');
+        categoryItem.classList.add(
+            'remem-list-item', 'category-item', 'general-text'
+        );
         categoryItem.id = `category-${category.id}`;
         categoryItem.innerHTML = category.name;
         return categoryItem;

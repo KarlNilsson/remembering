@@ -99,7 +99,7 @@ const todoView = (() => {
 
         const newContainer = document.createElement('div');
         trDone.appendChild(newContainer);
-        newContainer.classList.add('remem-new-container')
+        newContainer.classList.add('remem-new-container', 'remem-icon-td')
         const newButton = document.createElement('div');
         newButton.title = 'Create new todo';
         newContainer.appendChild(newButton);
