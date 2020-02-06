@@ -17,12 +17,6 @@ body {
     width: 80%;
 }
 
-@media only screen and (max-width: 1170px) {
-    body {
-        width: 90%
-    }
-}
-
 .header-container {
     display: flex;
     justify-content: center;
@@ -399,4 +393,58 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
 .remem-button:hover {
     background-color: var(--color-2);
     border-color: var(--color-3);
+}
+
+
+
+@media only screen and (max-width: 1200px) {
+    body {
+        width: 100%;
+        margin: 0;
+    }
+
+    .content-grid {
+        display: block;
+    }
+
+    ul {
+        columns: 4;
+        border-bottom: solid 4px var(--color-3);
+    }
+    
+    .general-text {
+        font-size: larger;
+    }
+    
+    h1.general-text {
+        font-size: 2em;
+    }
+
+    .remem-list-item {
+        padding: 0;
+    }
+
+    .todo-container {
+        border-left-width: 0px;
+    }
+
+    .todo-row .remem-done-container {
+        margin: auto;
+    }
+
+    .remem-icon-td {
+        transform: scale(1.4);
+    }
+
+    tr.todo-row {
+        padding: 1em;
+    }
+
+    td {
+        padding: calc(1em/2);
+    }
+
+    .remem-list-item.active::after {
+        content: '';
+    }
 }

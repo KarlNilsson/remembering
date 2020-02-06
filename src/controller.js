@@ -2,6 +2,11 @@ import { model } from './remembering-model.js';
 import { view } from './remembering-view.js';
 
 const controller = (() => {
+    const initialize = () => {
+        renderInitialView(model.getAllCategories());
+        addInitialListeners();
+    }
+
     const table = () => {
         return document.querySelector('table')
     };
@@ -9,15 +14,6 @@ const controller = (() => {
     const activeCategoryId = () => {
         const category = document.querySelector('.category-item.active').id;
         return category.split('category-')[1];
-    }
-
-    const activeCategory = () => {
-        return document.querySelector('.category-item.active').id;
-    }
-
-    const initialize = () => {
-        renderInitialView(model.getAllCategories());
-        addInitialListeners();
     }
 
     const renderInitialView = (categories) => {
@@ -30,7 +26,7 @@ const controller = (() => {
         // Set active category
         view.setActiveCategory(categoryElement);
         // Load todos for active category
-        if (activeCategory() !== null) {
+        if (categoryElement !== null) {
             const id = activeCategoryId();
             const todos = model.getCategory(id).todos;
             Object.keys(todos).forEach(key => {
