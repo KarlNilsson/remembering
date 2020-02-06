@@ -29,7 +29,7 @@ const categoryView = (() => {
         );
         categoryListContainer.appendChild(categoryList);
         return categoryListContainer;
-    }
+    };
 
     const addCategory = (category) => {
         const categoryItem = document.createElement('li');
@@ -46,14 +46,14 @@ const categoryView = (() => {
             `li.remem-list-item#category-${category.id}`
         );
         categoryElement.innerText = category.name;
-    }
+    };
 
     const deleteCategoryElement = (id) => {
         const categoryElement = document.querySelector(
             `li.remem-list-item#category-${id}`
         );
         document.querySelector('ul.remem-list').removeChild(categoryElement);
-    }
+    };
 
     return {
         createCategoryList,
@@ -63,4 +63,4 @@ const categoryView = (() => {
     };
 })();
 
-export { categoryView }
+export { categoryView };

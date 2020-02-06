@@ -15,7 +15,7 @@ const view = (() => {
             return;
         }
         storage.activeCategory = _activeCategoryId;
-    }
+    };
 
     const loadStorage = (storage = _storage) => {
         if (storage === null) {
@@ -27,15 +27,15 @@ const view = (() => {
             return;
         }
         _activeCategoryId = JSON.parse(storage.activeCategory);
-    }
+    };
 
     const setStorage = (storage) => {
         _storage = storage;
-    }
+    };
 
     const getStorage = () => {
         return _storage;
-    }
+    };
 
     const initializeView = () => {
         const body = document.querySelector('body');
@@ -49,7 +49,7 @@ const view = (() => {
         contentGrid.appendChild(categoryList);
         const todo = todoView.createTodoTable();
         contentGrid.appendChild(todo);
-    }
+    };
 
     const setNewTodoStatus = (status) => {
         const newContainer = document.querySelector(
@@ -63,7 +63,7 @@ const view = (() => {
             newContainer.classList.add('inactive');
             newButton.classList.add('inactive');
         }
-    }
+    };
 
     const createHeaderContainer = () => {
         const headerContainer = document.createElement('div');
@@ -73,19 +73,19 @@ const view = (() => {
         h1.innerHTML = 'Remembering';
         headerContainer.appendChild(h1);
         return headerContainer;
-    }
+    };
 
     const createContentGridContainer = () => {
         const contentGridContainer = document.createElement('div');
         contentGridContainer.id = 'content-grid-container';
         return contentGridContainer;
-    }
+    };
 
     const createContentGrid = () => {
         const contentGrid = document.createElement('div');
         contentGrid.classList.add('content-grid');
         return contentGrid;
-    }
+    };
 
     const todoDialog = (callback, todo = {}) => {
         const modalContainer = createModal();
@@ -135,7 +135,7 @@ const view = (() => {
                 done: Array.from(
                     done.querySelector('.remem-checkbox').classList)
                     .includes('checked')
-            }
+            };
         };
         submitButton.addEventListener('click', () => {
             callback(values());
@@ -157,10 +157,10 @@ const view = (() => {
                 clearModal();
             }
         });
-        const input = title.querySelector('input')
+        const input = title.querySelector('input');
         input.focus();
         input.scrollTo(0, 0);
-    }
+    };
 
     const categoryDialog = (callback, category = {}) => {
         const modalContainer = createModal('category');
@@ -186,7 +186,7 @@ const view = (() => {
                 category: {
                     name: name.querySelector('input').value
                 }
-            }
+            };
         };
 
         const buttonDiv = document.createElement('div');
@@ -199,7 +199,7 @@ const view = (() => {
         submitButton.addEventListener('click', () => {
             const data = values();
             data.action = 'submit';
-            callback(data)
+            callback(data);
             clearModal();
         });
 
@@ -218,7 +218,7 @@ const view = (() => {
                 data.action = 'delete';
                 callback(data);
                 clearModal();
-            })
+            });
         }
 
         modalContainer.addEventListener('keyup', (e) => {
@@ -227,7 +227,7 @@ const view = (() => {
             } else if (e.key === 'Enter') {
                 const data = values();
                 data.action = 'submit';
-                callback(data)
+                callback(data);
                 clearModal();
             }
         });
@@ -237,10 +237,10 @@ const view = (() => {
             }
         });
 
-        const input = name.querySelector('input')
+        const input = name.querySelector('input');
         input.focus();
         input.scrollTo(0, 0);
-    }
+    };
 
     const clearModal = () => {
         const modalContainer = document.querySelector('.modal-container');
@@ -253,7 +253,7 @@ const view = (() => {
                 }
             });
         }
-    }
+    };
 
     const getActiveCategory = () => {
         if (_activeCategory !== undefined && _activeCategory !== null) {
@@ -267,7 +267,7 @@ const view = (() => {
             return document.querySelector('.category-item');
         }
         return activeCategory;
-    }
+    };
 
     const setActiveCategory = (listItem) => {
         if (listItem === null) {
@@ -287,17 +287,17 @@ const view = (() => {
         _activeCategoryId = listItem.id.split('category-')[1];
         setNewTodoStatus(true);
         storeActiveCategory();
-    }
+    };
 
     const addTodo = (todo) => {
         const row = todoView.generateTodoElements(todo);
         const table = document.querySelector('.todo-container table');
         table.appendChild(row);
-    }
+    };
 
     const updateTodo = (todo) => {
         todoView.updateTodoElement(todo);
-    }
+    };
 
     const addCategory = (category) => {
         const categoryList = document.querySelector('.category-list');
@@ -305,22 +305,22 @@ const view = (() => {
         categoryList.appendChild(categoryItem);
         clearTable();
         setActiveCategory(categoryItem);
-    }
+    };
 
     const updateCategory = (category) => {
         categoryView.editCategoryElement(category);
-    }
+    };
 
     const deleteCategory = (id) => {
         categoryView.deleteCategoryElement(id);
         setActiveCategory(null);
-    }
+    };
 
     const deleteRow = (id) => {
         const table = document.querySelector('.remem-list-container table');
         const row = table.querySelector(`tr#todo-${id}`);
         table.removeChild(row);
-    }
+    };
 
     const createModal = (type) => {
         const modalContainer = document.createElement('div');
@@ -328,13 +328,13 @@ const view = (() => {
         modalContainer.tabIndex = 0;
         document.querySelector('body').appendChild(modalContainer);
         return modalContainer;
-    }
+    };
 
     const clearTable = () => {
         const table = document.querySelector('table');
         const rows = Array.from(table.querySelectorAll('.todo-row'));
         rows.forEach(node => table.removeChild(node));
-    }
+    };
 
     return {
         storeActiveCategory,
@@ -353,7 +353,7 @@ const view = (() => {
         updateCategory,
         deleteCategory,
         clearTable
-    }
+    };
 })();
 
-export { view }
+export { view };

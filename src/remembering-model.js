@@ -28,7 +28,7 @@ const model = (() => {
                 categories[key].id = _categoryId;
                 _categoryMap[_categoryId] = categories[key];
                 for (const todo in _categoryMap[_categoryId].todos) {
-                    _todoMap[todo] = _categoryMap[_categoryId].todos[todo]
+                    _todoMap[todo] = _categoryMap[_categoryId].todos[todo];
                     _todoId = Math.max(_todoId, todo);
                 }
             });
@@ -50,7 +50,7 @@ const model = (() => {
             priority: data.priority,
             done: false,
             category: data.category,
-        }
+        };
         _addToMaps(todo);
         _updateStorage();
         return todo;
@@ -60,7 +60,7 @@ const model = (() => {
         const todo = getTodo(id);
         Object.keys(data).forEach(key => {
             todo[key] = data[key];
-        })
+        });
         _updateStorage();
         return todo;
     };
@@ -129,7 +129,7 @@ const model = (() => {
         deleteCategory,
         getCategory,
         getAllCategories
-    }
+    };
 })();
 
 export { model };

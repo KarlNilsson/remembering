@@ -4,7 +4,7 @@ const todoView = (() => {
         TITLE: 1,
         DUEDATE: 2,
         STATUS: 3
-    }
+    };
 
     const createTodoTable = () => {
         const todoTableContainer = document.createElement('div');
@@ -17,7 +17,7 @@ const todoView = (() => {
         const header = todoView.generateTableHeader();
         todoTable.appendChild(header);
         return todoTableContainer;
-    }
+    };
 
     const generateTodoElements = (todo) => {
         const row = document.createElement('tr');
@@ -42,14 +42,14 @@ const todoView = (() => {
 
         done.classList.add('remem-icon', 'remem-done');
         doneContainer.classList.add('remem-done', 'remem-done-container');
-        doneContainer.appendChild(done)
+        doneContainer.appendChild(done);
         doneTD.appendChild(doneContainer);
 
         titleTD.innerHTML = todo.title !== undefined ? todo.title : '';
         dueDateTD.innerHTML = todo.dueDate !== undefined ? todo.dueDate : '';
         if (todo.done) {
             row.classList.add('done');
-            done.classList.add('icono-check')
+            done.classList.add('icono-check');
         }
         if (todo.priority) {
             row.classList.add('prioritized');
@@ -61,7 +61,7 @@ const todoView = (() => {
         row.appendChild(statusTD);
 
         return row;
-    }
+    };
 
     const updateTodoElement = (todo) => {
         const row = document.querySelector(`#todo-${todo.id}`);
@@ -84,7 +84,7 @@ const todoView = (() => {
         } else {
             row.classList.remove('prioritized');
         }
-    }
+    };
 
     const generateTableHeader = () => {
         const trHeaders = document.createElement('tr');
@@ -99,7 +99,7 @@ const todoView = (() => {
 
         const newContainer = document.createElement('div');
         trDone.appendChild(newContainer);
-        newContainer.classList.add('remem-new-container', 'remem-icon-td')
+        newContainer.classList.add('remem-new-container', 'remem-icon-td');
         const newButton = document.createElement('div');
         newButton.title = 'Create new todo';
         newContainer.appendChild(newButton);
@@ -113,14 +113,14 @@ const todoView = (() => {
         trHeaders.appendChild(trStatus);
 
         return trHeaders;
-    }
+    };
 
     return {
         createTodoTable,
         generateTodoElements,
         generateTableHeader,
         updateTodoElement
-    }
+    };
 })();
 
 export { todoView };

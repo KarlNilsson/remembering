@@ -5,22 +5,22 @@ const controller = (() => {
     const initialize = () => {
         renderInitialView(model.getAllCategories());
         addInitialListeners();
-    }
+    };
 
     const table = () => {
-        return document.querySelector('table')
+        return document.querySelector('table');
     };
 
     const activeCategoryId = () => {
         const category = document.querySelector('.category-item.active').id;
         return category.split('category-')[1];
-    }
+    };
 
     const renderInitialView = (categories) => {
         // Render all categories
         Object.keys(categories).forEach(key => {
             view.addCategory(categories[key]);
-        })
+        });
 
         const categoryElement = view.getActiveCategory();
         // Set active category
@@ -33,7 +33,7 @@ const controller = (() => {
                 view.addTodo(todos[key]);
             });
         }
-    }
+    };
 
     const addInitialListeners = () => {
         // Add new button listener
@@ -49,7 +49,7 @@ const controller = (() => {
                 data.category = categoryId;
                 const todo = model.createTodo(data);
                 view.addTodo(todo);
-            })
+            });
         });
 
         const newCategoryButton = document.querySelector(
@@ -59,15 +59,15 @@ const controller = (() => {
             view.categoryDialog((data) => {
                 const category = model.createCategory(data.category);
                 view.addCategory(category);
-            })
-        })
+            });
+        });
 
         // Onclick for table elements
         table().addEventListener('click', e => {
             let row = e.target;
 
             while (!row.className.includes('todo-row')) {
-                row = row.parentNode
+                row = row.parentNode;
                 // Click was not on a row. Smile and wave
                 if (row.localName === 'table') {
                     return;
@@ -77,7 +77,7 @@ const controller = (() => {
             const className = e.target.className;
 
             if (className.includes('remem-bin')) {
-                model.deleteTodo(id)
+                model.deleteTodo(id);
                 view.deleteRow(id);
             } else if (className.includes('remem-done')) {
                 const todo = model.getTodo(id);
@@ -89,7 +89,7 @@ const controller = (() => {
                 view.todoDialog((data) => {
                     data.category = activeCategoryId();
                     model.editTodo(id, data);
-                    view.updateTodo(currentTodo)
+                    view.updateTodo(currentTodo);
                 }, currentTodo);
             }
         });
@@ -125,7 +125,7 @@ const controller = (() => {
                             view.clearTable();
                             Object.keys(todos).forEach(key => {
                                 view.addTodo(todos[key]);
-                            })
+                            });
                         }
                     }
                 }, category);
@@ -136,12 +136,12 @@ const controller = (() => {
                 view.clearTable();
                 Object.keys(todos).forEach(key => {
                     view.addTodo(todos[key]);
-                })
+                });
             }
         });
-    }
+    };
 
     return { initialize };
 })();
 
-export { controller }
+export { controller };
